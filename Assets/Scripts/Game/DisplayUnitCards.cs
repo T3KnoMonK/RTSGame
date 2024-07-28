@@ -32,11 +32,12 @@ public class DisplayUnitCards : MonoBehaviour
 
         for (int i = 0; i < unitsList.Count; i++)
         {
-            int id = unitsList[i].GetID();
+            Selectable currentUnit = unitsList[i];
+            int id = currentUnit.GetID();
             GameObject card = new GameObject();
-            SO_Unit unitSO = unitsList[i].GetComponent<Unit>().GetSO() as SO_Unit;
+            SO_Unit unitSO = currentUnit.GetComponent<Unit>().GetSO() as SO_Unit;
             Debug.Log("Associating id: " + id + " with card: " + card);
-            //_UnitCardAssoc.Add(unitsList[i].GetID(), card);
+            _UnitCardAssoc.Add(currentUnit.GetID(), card);
 
             card.transform.SetParent(gameObject.transform);
 
@@ -63,7 +64,7 @@ public class DisplayUnitCards : MonoBehaviour
             cardCollider.size.Set(_UnitCardWidth, _UnitCardHeight);
 
             cardButton.onClick.AddListener(
-                delegate { SelectUnitFromCard(unitsList[i]);}
+                delegate { SelectUnitFromCard(currentUnit);}
                 );
 
             card.gameObject.tag = "UnitCard";
@@ -108,6 +109,7 @@ public class DisplayUnitCards : MonoBehaviour
             if (gameObject.transform.GetChild(i).gameObject != null)
                 Destroy(gameObject.transform.GetChild(i).gameObject);
         }
+        _UnitCardAssoc.Clear();
     }
 
 }

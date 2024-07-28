@@ -15,7 +15,8 @@ public class PlayerObjects
     private List<Selectable> selectedObjects = new List<Selectable>();
 
     [SerializeField]
-    private DisplayUnitCards unitCardPanel = null; public DisplayUnitCards GetUnitCardPanel() { return unitCardPanel; }
+    private DisplayUnitCards unitCardPanel = null; 
+    public DisplayUnitCards GetUnitCardPanel() { return unitCardPanel; }
     [SerializeField]
     private DisplayActions actionsPanel = null;
     [SerializeField]
