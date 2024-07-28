@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c47fcc8dfa22749a448af73e6a226b, type: 3}
+  m_Name: PlaceFactory
+  m_EditorClassIdentifier: 
+  Image: {fileID: 21300000, guid: 6c8a15a34d3a93e40a6dcbe97657205d, type: 3}
+  Cost: 200
+  Placeholder: {fileID: 9169424224707868972, guid: 94731a095fa6c5e43ac0ecf29241c682,
+    type: 3}
+  Building: {fileID: 9169424224707868972, guid: 6e4e53feee4361647b37fe7b3a2a02ba,
+    type: 3}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13795d6eaf20d444dab0b6832a00e665, type: 3}
+  m_Name: Heavy Assault
+  m_EditorClassIdentifier: 
+  MaxHealth: 100
+  Name: Heavy Assault
+  Description: A strong but slow unit capable of taking and dishing out a beating.
+  OwningPlayer: 
+  Card: {fileID: 21300000, guid: 6c8a15a34d3a93e40a6dcbe97657205d, type: 3}
+  unit: {fileID: 8644970755313441507, guid: 03663342ea74cde499e66de45cb73b1d, type: 3}
+  speed: 10
+  damage: 30
+  attackDistance: 30
+  attackSpeed: 5
+  maxCargo: 0
+  gatherRate: 0
+  supplyCost: 3
+  unitType: 2
+  unitSkin: {fileID: 2100000, guid: 73978c5ae60fd8048be26f09710fa504, type: 2}

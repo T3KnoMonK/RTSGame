@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c47fcc8dfa22749a448af73e6a226b, type: 3}
+  m_Name: PlaceBarracks
+  m_EditorClassIdentifier: 
+  Image: {fileID: 21300000, guid: 0a91566c5f191224ba4a62a72b3d8e23, type: 3}
+  ActionName: Place Barracks
+  ActionDescription: Builds a barracks at the selected location
+  Cost: 100
+  SecondsToComplete: 0
+  Placeholder: {fileID: 9169424224707868972, guid: 14ce533b2958d7f42813eb7d4eb1cf8c,
+    type: 3}
+  Building: {fileID: 9169424224707868972, guid: fe2b1c830b523634d9f9bf484bf553ec,
+    type: 3}
