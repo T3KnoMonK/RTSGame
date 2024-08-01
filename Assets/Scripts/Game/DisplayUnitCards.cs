@@ -11,6 +11,7 @@ public class DisplayUnitCards : MonoBehaviour
 
     private float _UnitCardWidth;
     private float _UnitCardHeight;
+    private float _RightPadding = 10.0f;
 
     [SerializeField] private int _UnitCardRows = 2;
     [SerializeField] private int _UnitCardColumns = 10;
@@ -59,7 +60,10 @@ public class DisplayUnitCards : MonoBehaviour
             cardRect.anchorMax = new Vector2(0.0f, 1.0f);
             cardRect.pivot = new Vector2(0.0f, 1.0f);
             cardRect.sizeDelta = new Vector2(_UnitCardWidth, _UnitCardHeight);
-            cardRect.anchoredPosition = new Vector2(i % _UnitCardColumns * _UnitCardWidth,0);
+
+            cardRect.anchoredPosition = new Vector2(
+                (i % _UnitCardColumns * _UnitCardWidth) + (_RightPadding*i)
+                ,0); //TODO: Fix row/column spacing
 
             cardCollider.size.Set(_UnitCardWidth, _UnitCardHeight);
 
