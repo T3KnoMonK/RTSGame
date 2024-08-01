@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class Unit : Selectable
 {
+    public delegate void DestroyUnitCardDelegate(GameObject card, GameObject unit); //need to pass unit so DisplayUnitCards can call for the Unit to be destroyed after destroying the card
+    public static DestroyUnitCardDelegate DestroyUnitCardEvent;
+
     protected UnitFSM _UnitFSM;
     public UnitFSM GetUnitFSM() { return _UnitFSM; }
 
@@ -13,6 +16,7 @@ public class Unit : Selectable
     private List<ParticleCollisionEvent> _CollisionEvents;
 
     private HealthBarScript _HealthBarScript;
+    private GameObject _UnitCardRef;
 
     private float _Speed;
     private float _MaxSpeed;
@@ -75,8 +79,9 @@ public class Unit : Selectable
         if (_Health <= 0)
         {
             Debug.Log(gameObject.name + " died!");
-            Player.Instance.Army.GetUnitCardPanel().RemovedDestroyedUnitCard(this);
-            Destroy(gameObject);
+            //Player.Instance.Army.GetUnitCardPanel().RemovedDestroyedUnitCard(this);
+            DestroyUnitCard();
+            //Destroy(gameObject); //Might need to callback from the card or DisplayUnitCards to destroy Unit as Unit holds the card reference for it to be destroyed in the first place. Did not mean for that to be coupled so strongly -_-
         }
     }
 
@@ -86,5 +91,15 @@ public class Unit : Selectable
         _UnitFSM.ManualMoveAction = true;
         _UnitFSM.ClickPos = pos;
         _UnitFSM.ChangeState(_UnitFSM.GetState("MOVE"));
+    }
+
+    public void SetUnitCardRef(GameObject card)
+    {
+        _UnitCardRef = card;
+    }
+
+    private void DestroyUnitCard()
+    {
+        DestroyUnitCardEvent?.Invoke(_UnitCardRef, gameObject);
     }
 }

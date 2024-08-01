@@ -12,14 +12,17 @@ public class DisplayUnitCards : MonoBehaviour
     private float _UnitCardWidth;
     private float _UnitCardHeight;
     private float _RightPadding = 10.0f;
+    private float _BottomPadding = 10.0f;
 
     [SerializeField] private int _UnitCardRows = 2;
     [SerializeField] private int _UnitCardColumns = 10;
 
-    private Dictionary<int, GameObject> _UnitCardAssoc = new Dictionary<int, GameObject>();
+    private List<GameObject> _UnitCards = new List<GameObject>();
 
     private void Start()
     {
+        Unit.DestroyUnitCardEvent += DestroySingleCard;
+
         _ParentPanel = GetComponent<RectTransform>();
         _Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
@@ -37,8 +40,6 @@ public class DisplayUnitCards : MonoBehaviour
             int id = currentUnit.GetID();
             GameObject card = new GameObject();
             SO_Unit unitSO = currentUnit.GetComponent<Unit>().GetSO() as SO_Unit;
-            Debug.Log("Associating id: " + id + " with card: " + card);
-            _UnitCardAssoc.Add(currentUnit.GetID(), card);
 
             card.transform.SetParent(gameObject.transform);
 
@@ -72,6 +73,9 @@ public class DisplayUnitCards : MonoBehaviour
                 );
 
             card.gameObject.tag = "UnitCard";
+
+            _UnitCards.Add(card);
+            currentUnit.GetComponent<Unit>().SetUnitCardRef(card);
         }
     }
 
@@ -80,22 +84,40 @@ public class DisplayUnitCards : MonoBehaviour
 
     }
 
-    public void RemovedDestroyedUnitCard(Selectable go)
+    //public void RemovedDestroyedUnitCard(Selectable go)
+    //{
+    //    Debug.Log("Destroying unit card");
+    //    GameObject tmp;
+    //    for(int i = 0; i < _UnitCardAssoc.Count; i++)
+    //    {
+    //        if(_UnitCardAssoc.TryGetValue(go.GetID(), out tmp))
+    //        {
+    //            if (gameObject.transform.GetChild(i).gameObject != null)
+    //                Destroy(gameObject.transform.GetChild(i).gameObject);
+    //        }
+    //        else
+    //        {
+    //            Destroy(tmp);
+    //            break;
+    //        }
+    //    }
+    //}
+    private void DestroySingleCard(GameObject card, GameObject unit)
     {
-        Debug.Log("Destroying unit card");
-        GameObject tmp;
-        for(int i = 0; i < _UnitCardAssoc.Count; i++)
+        _UnitCards.Remove(card);
+        Destroy(card);
+        //card.GetComponent<Image>().color = Color.red;
+        Destroy(unit);
+        ReorderCards();
+    }
+
+    private void ReorderCards()
+    {
+        for(int i = 0; i < _UnitCards.Count; i++)
         {
-            if(_UnitCardAssoc.TryGetValue(go.GetID(), out tmp))
-            {
-                if (gameObject.transform.GetChild(i).gameObject != null)
-                    Destroy(gameObject.transform.GetChild(i).gameObject);
-            }
-            else
-            {
-                Destroy(tmp);
-                break;
-            }
+            _UnitCards[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(
+                (i % _UnitCardColumns * _UnitCardWidth) + (_RightPadding * i)
+                , 0);
         }
     }
 
@@ -109,11 +131,14 @@ public class DisplayUnitCards : MonoBehaviour
         int count = gameObject.transform.childCount;
         for (int i = count - 1; i >= 0; i--)
         {
+            GameObject card = gameObject.transform.GetChild(i).gameObject;
             //This doesn't work with more than 1 for some reason
-            if (gameObject.transform.GetChild(i).gameObject != null)
-                Destroy(gameObject.transform.GetChild(i).gameObject);
+            if (card != null)
+            {
+                _UnitCards.Remove(card);
+                Destroy(card);
+            }
         }
-        _UnitCardAssoc.Clear();
     }
 
 }

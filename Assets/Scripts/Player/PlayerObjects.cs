@@ -53,6 +53,12 @@ public class PlayerObjects
         }
     }
 
+    public void RemoveSingleObjectFromSelected(Selectable obj)
+    {
+        obj.IsSelected = false;
+        selectedObjects.Remove(obj);
+    }
+
     public void ClearSelectedObjects()
     {
         unitCardPanel.RemoveUnitCardsFromUI();
