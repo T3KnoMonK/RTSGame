@@ -2134,9 +2134,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4329a8b92b0e2344ab0f8cdaff286353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitImage: {fileID: 1333991355}
-  UnitStats: {fileID: 1801037689}
-  UnitDescription: {fileID: 1656700978}
+  SelectedImg: {fileID: 1333991355}
+  SelectedStats: {fileID: 1801037689}
+  SelectedDescription: {fileID: 1656700978}
 --- !u!1001 &1091668114
 PrefabInstance:
   m_ObjectHideFlags: 0

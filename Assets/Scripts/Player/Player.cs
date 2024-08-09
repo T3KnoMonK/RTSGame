@@ -127,7 +127,7 @@ public class Player : MonoBehaviour, IClickContext
                 GameObject go = GetObjectOnClick();
                 if (go != null)
                 {
-                    if (go.tag == "Selectable" || go.tag == "Structure" || go.tag == "Depot")
+                    if (go.tag == "Selectable" || go.tag == "Structure" || go.tag == "Depot" || go.tag == "Resource")
                         Army.AddSingleObjectToSelected(go.GetComponent<Selectable>());
                     else if (go.tag == "Ground")
                         Army.ClearSelectedObjects();
