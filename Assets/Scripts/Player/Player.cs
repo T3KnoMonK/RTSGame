@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
@@ -113,6 +114,9 @@ public class Player : MonoBehaviour, IClickContext
             if (isMouseDragging)
             {
                 List<Selectable> selected = GetAllObjectsSelected();
+
+                //If multiple objects are caught in the bounding box then only Untis are selected.
+                //Otherwise if there's only selected then any object that inherits from Selectable can be selected.
                 if(selected.Count == 1) 
                 {
                     Army.AddSingleObjectToSelected(selected[0]); 
@@ -208,14 +212,23 @@ public class Player : MonoBehaviour, IClickContext
     public List<Selectable> GetAllObjectsSelected()
     {
         List<Selectable> rtnList = new List<Selectable>();
-        GameObject[] tmp = GameObject.FindGameObjectsWithTag("Selectable");
+
+        //If units are caught in the bounding box then they get selected first
+        Selectable[] tmp = GameObject.FindObjectsByType<Selectable>(FindObjectsSortMode.None);
+
+        CheckSelectedInBoundingBox(rtnList, tmp);
+        return rtnList;
+    }
+
+    private void CheckSelectedInBoundingBox(List<Selectable> rtnList, Selectable[] tmp)
+    {
+        
         for (int i = 0; i < tmp.Length; i++)
         {
             Vector3 loc = Camera.main.WorldToScreenPoint(tmp[i].transform.position);
             if (selectBox.Contains(new Vector3(loc.x, Screen.height - loc.y, loc.z), true))
                 rtnList.Add(tmp[i].GetComponent<Selectable>());
         }
-        return rtnList;
     }
 
     public void AddResource(int amount)

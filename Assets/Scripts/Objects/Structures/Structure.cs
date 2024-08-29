@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Structure : Selectable
@@ -15,6 +16,25 @@ public class Structure : Selectable
 
         if(_DeployUnit)
             DeployInitialUnit();
+    }
+
+    private void OnEnable()
+    {
+        InputManager.RightClickUpEvent += MoveWaypoint;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.RightClickUpEvent -= MoveWaypoint;
+    }
+
+    private void MoveWaypoint(RaycastHit target, Vector3 mouseWorldPos, bool shift)
+    {
+        if (IsSelected)
+        {
+            Transform flagT = GetComponent<Waypoint>().GetWaypoint();
+            flagT.position = new Vector3(target.point.x, flagT.position.y, target.point.z);
+        }
     }
 
     private void DeployInitialUnit()

@@ -5,9 +5,9 @@ using UnityEngine;
 public class Waypoint : MonoBehaviour
 {
     [SerializeField]
-    private Transform _SpawnWaypoint;
+    private Transform _WaypointObject;
 
-    public Transform GetWaypoint() { return _SpawnWaypoint; }
+    public Transform GetWaypoint() { return _WaypointObject; }
 
     private void OnEnable()
     {
@@ -16,6 +16,6 @@ public class Waypoint : MonoBehaviour
 
     public void ToggleVisibility(bool isVisible)
     {
-        _SpawnWaypoint.gameObject.SetActive(isVisible);
+        _WaypointObject.gameObject.SetActive(isVisible);
     }
 }
