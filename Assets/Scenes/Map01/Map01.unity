@@ -1831,12 +1831,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &722846709 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3837834156565025383, guid: f275edfd712b99541a2a4c0cccb315b1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1091668114}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &955443086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,11 +2195,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7343582251415658415, guid: f275edfd712b99541a2a4c0cccb315b1,
-        type: 3}
-      propertyPath: _WaypointObject
-      value: 
-      objectReference: {fileID: 722846709}
     - target: {fileID: 9169424224707868972, guid: f275edfd712b99541a2a4c0cccb315b1,
         type: 3}
       propertyPath: m_Name

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Resource : Selectable
@@ -5,6 +6,7 @@ public class Resource : Selectable
     public delegate void UpdateResourceDelegate();
     public static event UpdateResourceDelegate UpdateResourceEvent;
 
+    private List<Unit> _WorkerQ = new List<Unit>();
 
     private SO_Resource resourceSO;
 
@@ -28,4 +30,9 @@ public class Resource : Selectable
         UpdateResourceEvent?.Invoke();
         if (IsSelected) { Debug.Log("Resource is selected and has " + Resources + " resources."); }
     }
+
+    public void PushQ() {
+        _WorkerQ.RemoveAt(0);
+    }
+
 }

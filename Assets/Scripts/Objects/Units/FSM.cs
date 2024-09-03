@@ -7,6 +7,10 @@ public class FSM : MonoBehaviour
     public State defaultState;
     public State currentState;
 
+    public virtual void Awake()
+    {
+    }
+
     public virtual void Start()
     {
     }
@@ -19,7 +23,7 @@ public class FSM : MonoBehaviour
     public virtual void ChangeState(State newState)
     {
         //Debug.Log("Exiting state: " + currentState.ToString());
-        currentState.ExitState();
+        currentState?.ExitState();
         currentState = newState;
         currentState.EnterState();
         //Debug.Log("Entered state: " + currentState.ToString());

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 public class Structure : Selectable
 {
@@ -14,38 +15,39 @@ public class Structure : Selectable
     {
         _Waypoint = GetComponent<Waypoint>();
 
-        if(_DeployUnit)
-            DeployInitialUnit();
+        if (_DeployUnit)
+        {
+            DeployInitialUnit(_Waypoint.GetWaypoint().Spawn.position, _Waypoint.GetWaypoint().Flag.position);
+        }
     }
 
     private void OnEnable()
     {
-        InputManager.RightClickUpEvent += MoveWaypoint;
+        InputManager.RightClickUpEvent += MoveWaypointFlag;
     }
 
     private void OnDisable()
     {
-        InputManager.RightClickUpEvent -= MoveWaypoint;
+        InputManager.RightClickUpEvent -= MoveWaypointFlag;
     }
 
-    private void MoveWaypoint(RaycastHit target, Vector3 mouseWorldPos, bool shift)
+    private void MoveWaypointFlag(RaycastHit target, Vector3 mouseWorldPos, bool shift)
     {
         if (IsSelected)
         {
-            Transform flagT = GetComponent<Waypoint>().GetWaypoint();
+            Transform flagT = GetComponent<Waypoint>().GetWaypoint().Flag;
             flagT.position = new Vector3(target.point.x, flagT.position.y, target.point.z);
         }
     }
 
-    private void DeployInitialUnit()
+    private void DeployInitialUnit(Vector3 spawn, Vector3 waypoint)
     {
-        if (_InitialUnitToSpawn != null)
-        {
-            Instantiate(_InitialUnitToSpawn, _Waypoint.GetWaypoint().position, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogError("No Initial Unit reference from " + gameObject.name);
-        }
+        GameObject unit = Instantiate(_InitialUnitToSpawn, spawn, Quaternion.identity);
+        MoveToWaypoint(unit, waypoint);
+    }
+
+    private void MoveToWaypoint(GameObject unit, Vector3 waypoint)
+    {
+        unit.GetComponent<Unit>().SetMoveToWaypointOrder(GetComponent<Waypoint>().GetWaypoint().Flag.position);
     }
 }

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class WaypointScript : MonoBehaviour
 {
-    public Transform SpawnTransform;
-    private void Start()
-    {
-        SpawnTransform = transform;
-    }
+    public Transform Flag;
+    public Transform Spawn;
 }

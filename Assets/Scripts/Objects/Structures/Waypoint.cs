@@ -5,11 +5,11 @@ using UnityEngine;
 public class Waypoint : MonoBehaviour
 {
     [SerializeField]
-    private Transform _WaypointObject;
+    private WaypointScript _WaypointObject;
 
-    public Transform GetWaypoint() { return _WaypointObject; }
+    public WaypointScript GetWaypoint() { return _WaypointObject; }
 
-    private void OnEnable()
+    private void Start()
     {
         ToggleVisibility(false);
     }

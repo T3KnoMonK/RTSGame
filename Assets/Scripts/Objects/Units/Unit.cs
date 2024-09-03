@@ -79,9 +79,7 @@ public class Unit : Selectable
         if (_Health <= 0)
         {
             Debug.Log(gameObject.name + " died!");
-            //Player.Instance.Army.GetUnitCardPanel().RemovedDestroyedUnitCard(this);
             DestroyUnitCard();
-            //Destroy(gameObject); //Might need to callback from the card or DisplayUnitCards to destroy Unit as Unit holds the card reference for it to be destroyed in the first place. Did not mean for that to be coupled so strongly -_-
         }
     }
 
@@ -89,6 +87,12 @@ public class Unit : Selectable
     {
         _UnitFSM.CurrentBuildTarget = buildTarget;
         _UnitFSM.ManualMoveAction = true;
+        _UnitFSM.ClickPos = pos;
+        _UnitFSM.ChangeState(_UnitFSM.GetState("MOVE"));
+    }
+
+    public void SetMoveToWaypointOrder(Vector3 pos)
+    {
         _UnitFSM.ClickPos = pos;
         _UnitFSM.ChangeState(_UnitFSM.GetState("MOVE"));
     }

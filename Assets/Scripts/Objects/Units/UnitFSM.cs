@@ -9,7 +9,7 @@ public partial class UnitFSM : FSM, IClickContext
     public void SetParent(Unit parent) { Parent = parent; }
 
     public GameObject Target { get; set; }
-    public GameObject CurrentBuildTarget { get; set; } //Only for constructors, i.e. Worker, so you can destroy the placeholder is a new order is issued
+    public GameObject CurrentBuildTarget { get; set; } //Only for constructors, i.e. Worker, so you can destroy the placeholder if a new order is issued
     public Vector3 ClickPos { get; set; }
     public bool ManualMoveAction = false;
 
@@ -17,7 +17,7 @@ public partial class UnitFSM : FSM, IClickContext
 
     [SerializeField] private List<GameObject> actionButtons;
 
-    public override void Start()
+    private void Awake()
     {
         IdleState idle = new IdleState(this);
         MoveState move = new MoveState(this);
@@ -30,10 +30,12 @@ public partial class UnitFSM : FSM, IClickContext
         states.Add("ATTACK", attack);
         defaultState = states["IDLE"];
         currentState = defaultState;
-
-        parentSO = Parent.GetSO() as SO_Unit;
     }
 
+    public override void Start()
+    {
+        parentSO = Parent.GetSO() as SO_Unit;
+    }
 
     private void ChangeStateOnNewTarget()
     {
@@ -74,7 +76,6 @@ public partial class UnitFSM : FSM, IClickContext
     {
         base.Update();
     }
-
 
     public override void ChangeState(State newState)
     {

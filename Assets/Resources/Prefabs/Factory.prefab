@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ccd32639c7036a49a37e35dd3551472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _SpawnWaypoint: {fileID: 7706699751203421904}
+  _WaypointObject: {fileID: 7706699751203421904}
 --- !u!114 &5335721991322492958
 MonoBehaviour:
   m_ObjectHideFlags: 0

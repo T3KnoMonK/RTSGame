@@ -21,7 +21,7 @@ public partial class UnitFSM
         public override void UpdateState()
         {
             _UnitFSM.CurrentPos = _UnitFSM.Parent.transform.position;
-            //Debug.Log(_UnitFSM.CurrentPos.x + ", " + _UnitFSM.Parent.NavAgent.destination.x + ", " + _UnitFSM.CurrentPos.z + ", " + _UnitFSM.Parent.NavAgent.destination.z);
+
             if (_UnitFSM.CurrentPos.x == _UnitFSM.Parent.NavAgent.destination.x && _UnitFSM.CurrentPos.z == _UnitFSM.Parent.NavAgent.destination.z)
             {
                 if(_UnitFSM.ManualMoveAction == true)

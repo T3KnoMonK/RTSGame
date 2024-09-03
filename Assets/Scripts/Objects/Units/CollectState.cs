@@ -41,6 +41,7 @@ public partial class UnitFSM
                 {
                     if (!isCargoFull)
                     {
+                        //Enter Worker Queue on Resource, Resource calls worker Gather()
                         isCargoFull = true;
                         _UnitFSM.DoCoroutine(Gather());
                     }
