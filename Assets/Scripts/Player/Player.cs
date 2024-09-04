@@ -101,7 +101,6 @@ public class Player : MonoBehaviour, IClickContext
 
     private void Update()
     {
-        Debug.LogWarning(_CurrentSupply);
         if (cursorState == CursorState.Default) MouseDrag();
 
         if (Input.GetButtonDown("Left Click"))

@@ -26,7 +26,6 @@ public class Resource : Selectable
     public void AdjustResources(int amount){
         Resources += amount;
         if(Resources < 0) { Resources = 0; }
-        //Update details panel if resource is currently selected
         UpdateResourceEvent?.Invoke();
         if (IsSelected) { Debug.Log("Resource is selected and has " + Resources + " resources."); }
     }

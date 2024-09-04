@@ -9,13 +9,14 @@ public class Waypoint : MonoBehaviour
 
     public WaypointScript GetWaypoint() { return _WaypointObject; }
 
-    private void Start()
+    private void Awake()
     {
         ToggleVisibility(false);
     }
 
     public void ToggleVisibility(bool isVisible)
     {
+        Debug.LogWarning(gameObject.name + " is calling ToggleVisibility on it's Waypoint script");
         _WaypointObject.gameObject.SetActive(isVisible);
     }
 }
