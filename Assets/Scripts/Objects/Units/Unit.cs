@@ -106,4 +106,32 @@ public class Unit : Selectable
     {
         DestroyUnitCardEvent?.Invoke(_UnitCardRef, gameObject);
     }
+
+    //private Collider _Collider;
+
+    public void Disappear()
+    {
+        Debug.Log("Unit disappering");
+        gameObject.GetComponent<Collider>().enabled = false;
+        foreach(MeshRenderer rend in gameObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            rend.enabled = false;
+        }
+    }
+
+    public void Appear()
+    {
+        Debug.Log("Unit reappearing");
+        gameObject.GetComponent<Collider>().enabled = true;
+        foreach (MeshRenderer rend in gameObject.GetComponentsInChildren<MeshRenderer>())
+        {
+            rend.enabled = true;
+        }
+    }
+
+    private void ResumeGathering()
+    {
+        UnitFSM.CollectState col = (UnitFSM.CollectState)_UnitFSM.GetState("COLLECT");
+        col.ResumeGathering();
+    }
 }

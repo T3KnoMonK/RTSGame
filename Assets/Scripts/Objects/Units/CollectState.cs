@@ -11,18 +11,19 @@ public partial class UnitFSM
         private UnitFSM _UnitFSM;
         public CollectState(UnitFSM parent) : base(parent) { _UnitFSM = parent; }
 
-        private GameObject currentResourceTarget;
-        private GameObject currentDepotTarget;
-        private bool isCargoFull;
+        private GameObject _CurrentResourceTarget;
+        private GameObject _CurrentDepotTarget;
+        private bool _IsCargoFull;
+        private bool _IsPaused;
 
         public float GatherTime { get; private set; }
 
         public override void EnterState()
         {
             GatherTime = 1.0f;
-            currentResourceTarget = _UnitFSM.Target;
-            currentDepotTarget = GameObject.FindGameObjectWithTag("Depot");
-            _UnitFSM.Parent.NavAgent.SetDestination(currentResourceTarget.transform.position);
+            _CurrentResourceTarget = _UnitFSM.Target;
+            _CurrentDepotTarget = GameObject.FindGameObjectWithTag("Depot");
+            _UnitFSM.Parent.NavAgent.SetDestination(_CurrentResourceTarget.transform.position);
         }
 
         public override void ExitState() {
@@ -30,6 +31,8 @@ public partial class UnitFSM
 
         public override void UpdateState()
         {
+            if(_IsPaused) return;
+
             _UnitFSM.CurrentPos = _UnitFSM.Parent.transform.position;
 
             if (_UnitFSM.CurrentPos.x == _UnitFSM.Parent.NavAgent.destination.x && _UnitFSM.CurrentPos.z == _UnitFSM.Parent.NavAgent.destination.z)
@@ -37,21 +40,25 @@ public partial class UnitFSM
 
                 _UnitFSM.Parent.NavAgent.isStopped = true;
 
-                if (_UnitFSM.Target == currentResourceTarget)
+                if (_UnitFSM.Target == _CurrentResourceTarget)
                 {
-                    if (!isCargoFull)
+                    if (!_IsCargoFull)
                     {
                         //Enter Worker Queue on Resource, Resource calls worker Gather()
-                        isCargoFull = true;
-                        _UnitFSM.DoCoroutine(Gather());
+                        if (!_IsPaused)
+                        {
+                            EnterResourceQ();
+                        }
+                        //_UnitFSM.DoCoroutine(Gather());
+                        _IsCargoFull = true;
                     }
                 }
-                else if (_UnitFSM.Target == currentDepotTarget)
+                else if (_UnitFSM.Target == _CurrentDepotTarget)
                 {
-                    if (isCargoFull)
+                    if (_IsCargoFull)
                     {
-                        isCargoFull = false;
                         _UnitFSM.DoCoroutine(Deposit());
+                        _IsCargoFull = false;
                     }
                 }
             }
@@ -59,14 +66,36 @@ public partial class UnitFSM
             Debug.DrawLine(_UnitFSM.Parent.transform.position, _UnitFSM.Parent.NavAgent.destination, Color.blue);
         }
 
+        public void ResumeGathering()
+        {
+            PauseGathering(false);
+            _UnitFSM.DoCoroutine(Gather());
+        }
+
+
+        private void EnterResourceQ()
+        {
+            Resource r = _CurrentResourceTarget.GetComponent<Resource>();
+            if (r.IsQFull()) { _UnitFSM.ChangeState(_UnitFSM.GetState("IDLE")); }
+            r.AddToQ(_UnitFSM.Parent);
+            PauseGathering(true);
+        }
+
+        public void PauseGathering(bool set)
+        {
+            _IsPaused = set;
+            Debug.Log("Pause is set to" + set);
+        }
+
         public IEnumerator Gather()
         {
             yield return new WaitForSeconds(GatherTime);
             _UnitFSM.Parent.Cargo += _UnitFSM.Parent.GatherRate;
             _UnitFSM.Target.SendMessage("AdjustResources", _UnitFSM.Parent.GatherRate * -1, SendMessageOptions.RequireReceiver); //Should probably try to be more consistent with the type of events that I use
-            _UnitFSM.Target = currentDepotTarget;
-            _UnitFSM.Parent.NavAgent.SetDestination(currentDepotTarget.transform.position);
+            _UnitFSM.Target = _CurrentDepotTarget;
+            _UnitFSM.Parent.NavAgent.SetDestination(_CurrentDepotTarget.transform.position);
             _UnitFSM.Parent.NavAgent.isStopped = false;
+            _CurrentResourceTarget.GetComponent<Resource>().SendMessage("PopFromQ", SendMessageOptions.RequireReceiver);
         }
 
         public IEnumerator Deposit()
@@ -74,8 +103,8 @@ public partial class UnitFSM
             yield return new WaitForSeconds(GatherTime);
             DepositResourceEvent?.Invoke(_UnitFSM.Parent.GatherRate);
             _UnitFSM.Parent.Cargo = 0;
-            _UnitFSM.Target = currentResourceTarget;
-            _UnitFSM.Parent.NavAgent.SetDestination(currentResourceTarget.transform.position);
+            _UnitFSM.Target = _CurrentResourceTarget;
+            _UnitFSM.Parent.NavAgent.SetDestination(_CurrentResourceTarget.transform.position);
             _UnitFSM.Parent.NavAgent.isStopped = false;
         }
 

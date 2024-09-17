@@ -17,7 +17,7 @@ public partial class UnitFSM : FSM, IClickContext
 
     [SerializeField] private List<GameObject> actionButtons;
 
-    private void Awake()
+    public override void Awake()
     {
         IdleState idle = new IdleState(this);
         MoveState move = new MoveState(this);
