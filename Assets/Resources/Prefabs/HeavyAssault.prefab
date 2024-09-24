@@ -270,7 +270,6 @@ GameObject:
   - component: {fileID: 1582761733909297496}
   - component: {fileID: 1059303087313640114}
   - component: {fileID: 4695195598390676315}
-  - component: {fileID: 3168020340588050891}
   - component: {fileID: 6800758033873984866}
   m_Layer: 9
   m_Name: HeavyAssault
@@ -5313,27 +5312,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greenHealth: {fileID: 3378149430466044891}
   redHealth: {fileID: 7262034634952083}
---- !u!65 &3168020340588050891
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8644970755313441507}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3, y: 3, z: 5}
-  m_Center: {x: 0, y: 0.8, z: 0.2}
 --- !u!54 &6800758033873984866
 Rigidbody:
   m_ObjectHideFlags: 0
