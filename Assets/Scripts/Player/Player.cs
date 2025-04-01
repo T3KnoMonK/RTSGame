@@ -279,8 +279,13 @@ public class Player : MonoBehaviour, IClickContext
 
     public void SetActionCaller(Action actionCaller) { currentActionCaller = actionCaller; }
 
+    //TODO: Refactor the ownership of the PlaceBuildingAction call and the BuildingPlaceholder so that the individual Worker is responsible for their own placeholder.
     public void SetPlayerBuildingPlaceholder(GameObject placeholder, GameObject building) {
-        if(currentStructurePlaceholder != null) { Destroy(currentStructurePlaceholder); Kill_WFW_Coroutine(); }
+        if(currentStructurePlaceholder != null) {
+            Debug.LogWarning("Destroyed: " + currentStructurePlaceholder.name + " on Worker: " + currentActionCaller.GetInstanceID());
+            Destroy(currentStructurePlaceholder); 
+            Kill_WFW_Coroutine(); 
+        }
         
         cursorState = CursorState.Placeholder;
         currentBuildingToPlace = building;
