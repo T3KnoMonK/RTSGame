@@ -31,6 +31,8 @@ public class Unit : Selectable
     [HideInInspector] public int GatherRate;
     [HideInInspector] public int UnitSupply;
 
+    private Queue<Action> _ActionQueue = new();
+
     private void Awake()
     {
         SO_Unit unitSO = SelectedSO as SO_Unit;
@@ -133,5 +135,23 @@ public class Unit : Selectable
     {
         UnitFSM.CollectState col = (UnitFSM.CollectState)_UnitFSM.GetState("COLLECT");
         col.ResumeGathering();
+    }
+
+    public void QueueAction(Action action)
+    {
+        _ActionQueue.Enqueue(action);
+    }
+
+    //Call this once the top action is completed
+    public void DequeueAction(Action action)
+    {
+        _ActionQueue.Dequeue();
+    }
+
+    //Used to clear the queue and add actin if shift is not held down
+    public void CleanQueueAction(Action action)
+    {
+        _ActionQueue.Clear();
+        _ActionQueue.Enqueue(action);
     }
 }

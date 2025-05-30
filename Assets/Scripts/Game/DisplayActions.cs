@@ -32,9 +32,31 @@ class DisplayActions : MonoBehaviour
             _ChildButtons[i].GetComponent<Image>().sprite = _SelectedActions[i].Image;
             _ChildButtons[i].onClick.RemoveAllListeners();
             _ChildButtons[i].GetComponent<Button>().onClick.AddListener(_SelectedActions[i].DoAction);
+            //_ChildButtons[i].GetComponent<Button>().onClick.AddListener(() => QueueActionToUnit(_SelectedActions[i]));
             _SelectedActions[i].SetParent(parent.gameObject);
             _ChildButtons[i].gameObject.SetActive(true);
         }
+    }
+
+    private void QueueActionToUnit(Action action)
+    {
+        if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
+        {
+            foreach (Unit unit in Player.Instance.Army.GetPlayerSelectedObjects())
+            {
+                unit.QueueAction(action);
+                Debug.Log("Added action: " + action.name + " to unit: " + unit.name + "'s action queue.");
+            }
+        }
+        else
+        {
+            foreach (Unit unit in Player.Instance.Army.GetPlayerSelectedObjects())
+            {
+                unit.CleanQueueAction(action);
+                Debug.Log("Added action: " + action.name + " to unit: " + unit.name + "'s action queue.");
+            }
+        }
+        
     }
 
     private void DisableActionButtons()
