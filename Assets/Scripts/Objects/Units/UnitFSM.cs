@@ -10,6 +10,7 @@ public partial class UnitFSM : FSM, IClickContext
 
     public GameObject Target { get; set; }
     public GameObject CurrentBuildTarget { get; set; } //Only for constructors, i.e. Worker, so you can destroy the placeholder if a new order is issued
+    public GameObject CurrentBuildingPlaceholder { get; set; }
     public Vector3 ClickPos { get; set; }
     public bool ManualMoveAction = false;
 

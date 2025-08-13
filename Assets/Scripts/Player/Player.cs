@@ -338,6 +338,10 @@ public class Player : MonoBehaviour, IClickContext
         HasWorkerArrived = false;
         if (cursorState != CursorState.Default) { SetCursorDefault(); } //Allows the player to box select while the worker is moving
         yield return new WaitUntil(() => HasWorkerArrived);
+        if(currentStructurePlaceholder == null)
+        {
+            Debug.Log("Placeholder no longer exists.");
+        }
         Destroy(currentStructurePlaceholder);
         GameObject newBuilding = Instantiate(building, worldPos, Quaternion.identity);
         RemoveResource(currentActionCaller.ActionCost());
