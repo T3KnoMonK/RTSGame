@@ -32,7 +32,6 @@ class DisplayActions : MonoBehaviour
             _ChildButtons[i].GetComponent<Image>().sprite = _SelectedActions[i].Image;
             _ChildButtons[i].onClick.RemoveAllListeners();
             _ChildButtons[i].GetComponent<Button>().onClick.AddListener(_SelectedActions[i].DoAction);
-            //_ChildButtons[i].GetComponent<Button>().onClick.AddListener(() => QueueActionToUnit(_SelectedActions[i]));
             _SelectedActions[i].SetParent(parent.gameObject);
             _ChildButtons[i].gameObject.SetActive(true);
         }
@@ -65,7 +64,6 @@ class DisplayActions : MonoBehaviour
         {
             if (_ChildButtons[i].gameObject.activeSelf == true)
             {
-                //_ChildButtons[i].GetComponent<Button>().onClick = null;
                 _ChildButtons[i].gameObject.SetActive(false);
             }
         }

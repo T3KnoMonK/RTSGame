@@ -29,7 +29,8 @@ public partial class UnitFSM
                     //At this time this block is only used to determine if the worker has arrived at the location of a building the player is placing
                     if (_UnitFSM.parentSO.unitType == 0)
                     {
-                        Player.Instance.SendMessage("WorkerHasArrived", SendMessageOptions.DontRequireReceiver);
+                        //Player.Instance.SendMessage("WorkerHasArrived", SendMessageOptions.DontRequireReceiver);
+                        _UnitFSM.Parent.WorkerHasArrived();
                     }
                 }
 

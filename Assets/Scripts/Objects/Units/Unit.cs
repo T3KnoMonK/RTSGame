@@ -1,12 +1,20 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Unit : Selectable
+public class Unit : Selectable, IClickContext
 {
+    public delegate void PlacedBuildingDelegate();
+    public static PlacedBuildingDelegate PlacedBuildingEvent;
+
     public delegate void DestroyUnitCardDelegate(GameObject card, GameObject unit); //need to pass unit so DisplayUnitCards can call for the Unit to be destroyed after destroying the card
     public static DestroyUnitCardDelegate DestroyUnitCardEvent;
+
+    private GameObject currentStructurePlaceholder;
+    private GameObject currentBuildingToPlace;
 
     protected UnitFSM _UnitFSM;
     public UnitFSM GetUnitFSM() { return _UnitFSM; }
@@ -49,6 +57,23 @@ public class Unit : Selectable
 
         _UnitFSM = gameObject.AddComponent<UnitFSM>();
         _UnitFSM.SetParent(this);
+    }
+
+    private void OnEnable()
+    {
+        InputManager.LeftClickUpEvent += OnLeftClickUp;
+        InputManager.RightClickUpEvent += OnRightClickUp;
+        InputManager.LeftClickDownEvent += OnLeftClickDown;
+        InputManager.RightClickDownEvent += OnRightClickDown;
+    }
+
+
+    private void OnDisable()
+    {
+        InputManager.LeftClickUpEvent -= OnLeftClickUp;
+        InputManager.RightClickUpEvent -= OnRightClickUp;
+        InputManager.LeftClickDownEvent -= OnLeftClickDown;
+        InputManager.RightClickDownEvent -= OnRightClickDown;
     }
 
     private void Start()
@@ -153,5 +178,108 @@ public class Unit : Selectable
     {
         _ActionQueue.Clear();
         _ActionQueue.Enqueue(action);
+    }
+
+    public void OnRightClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
+    {
+        if (!IsSelected) { return; }
+
+        if (Player.Instance.IsCursorPlaceholder())
+        {
+            Player.Instance.SetCursorDefault();
+            Destroy(currentStructurePlaceholder);
+            
+        }
+    }
+
+    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
+    {
+        //Running PlaceBuilding() here causes it to fire immediately after you set the placeholder since the mouse up event is directly after; This made me add the separate down/up click events and methods.
+    }
+
+
+    private void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift)
+    {
+    }
+
+    public void OnLeftClickDown(RaycastHit hitObj, Vector3 mousePos, bool isShift)
+    {
+        if (!IsSelected) { return; }
+        //Because the mouse down event already fired when you clicked the action button this should be the next mouse down event
+        if (Player.Instance.IsCursorPlaceholder())
+        {
+            PlaceBuilding(currentBuildingToPlace, currentStructurePlaceholder.transform.position);
+        }
+    }
+
+    //TODO: Refactor the ownership of the PlaceBuildingAction call and the BuildingPlaceholder so that the individual Worker is responsible for their own placeholder.
+    public void SetPlayerBuildingPlaceholder(GameObject placeholder, GameObject building)
+    {
+        if (currentStructurePlaceholder != null)
+        {
+            //Debug.LogWarning("Destroyed: " + currentStructurePlaceholder.name + " on Worker: " + gameObject.GetInstanceID());
+            Destroy(currentStructurePlaceholder);
+            Kill_WFW_Coroutine();
+        }
+
+        Player.Instance.SetCursorPlaceholder();
+        currentBuildingToPlace = building;
+        currentStructurePlaceholder = Instantiate(placeholder, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
+    }
+
+    public void PlaceBuilding(GameObject building, Vector3 worldPos)
+    {
+        if (currentStructurePlaceholder.GetComponent<CheckObstruction>()!.IsObsructed() == false)
+        {
+            CallWorkerMoveOrder();
+            currentStructurePlaceholder.GetComponent<FollowCursor>().StopFollowing();
+            WaitForWorkerCoroutine = StartCoroutine(WaitForWorker(building, worldPos));
+        }
+    }
+
+    public void Kill_WFW_Coroutine()
+    {
+        StopCoroutine(WaitForWorkerCoroutine);
+    }
+
+    private void CallWorkerMoveOrder()
+    {
+        foreach (Selectable unit in Player.Instance.Army.GetPlayerSelectedObjects())
+        {
+            Unit tmp = unit as Unit;
+            if (tmp.GetUnitFSM().parentSO.unitType == 0)
+            {
+                tmp.SetBuildMoveOrder(currentStructurePlaceholder.transform.position, currentStructurePlaceholder);
+            }
+        }
+    }
+
+    public Coroutine WaitForWorkerCoroutine;
+
+    private Action currentActionCaller;
+
+    public void SetActionCaller(Action actionCaller) { currentActionCaller = actionCaller; }
+
+    private IEnumerator WaitForWorker(GameObject building, Vector3 worldPos)
+    {
+        HasWorkerArrived = false;
+        if (Player.Instance.IsCursorDefault() == false) { Player.Instance.SetCursorDefault(); } //Allows the player to box select while the worker is moving
+        yield return new WaitUntil(() => HasWorkerArrived);
+        //if (currentStructurePlaceholder == null)
+        //{
+        //    Debug.Log("Placeholder no longer exists.");
+        //}
+        Destroy(currentStructurePlaceholder);
+        GameObject newBuilding = Instantiate(building, worldPos, Quaternion.identity);
+        Player.Instance.RemoveResource(currentActionCaller.ActionCost());
+        Debug.Log(WaitForWorkerCoroutine.ToString());
+    }
+
+    private bool HasWorkerArrived;
+
+    public void WorkerHasArrived()
+    {
+        HasWorkerArrived = true;
+        Debug.Log("Worker arrived");
     }
 }
