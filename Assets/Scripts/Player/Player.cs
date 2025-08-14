@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro.EditorUtilities;
@@ -215,7 +216,13 @@ public class Player : MonoBehaviour, IClickContext
         //If units are caught in the bounding box then they get selected first
         Selectable[] tmp = GameObject.FindObjectsByType<Selectable>(FindObjectsSortMode.None);
 
+
         CheckSelectedInBoundingBox(rtnList, tmp);
+        if (rtnList.Exists(x => x.GetComponent<Unit>()))
+        {
+            rtnList = rtnList.FindAll(x => x.GetComponent<Unit>());
+        }
+
         return rtnList;
     }
 
