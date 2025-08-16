@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: 6c8a15a34d3a93e40a6dcbe97657205d, type: 3}
   Cost: 200
+  ReadyTime: 0
+  CooldownTime: 1
   Placeholder: {fileID: 9169424224707868972, guid: 94731a095fa6c5e43ac0ecf29241c682,
     type: 3}
   Building: {fileID: 9169424224707868972, guid: 6e4e53feee4361647b37fe7b3a2a02ba,

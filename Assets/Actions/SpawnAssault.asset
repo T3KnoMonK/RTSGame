@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: SpawnAssault
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: d26931852ae82c3459d29b34c5e8289a, type: 3}
-  ActionName: Spawn Assault
-  ActionDescription: Spawn a light assault vehicle. Fast movement but low health.
   Cost: 20
-  SecondsToComplete: 0
+  ReadyTime: 0
+  CooldownTime: 1
   UnitToSpawn: {fileID: 8644970755313441507, guid: 1463f213d84b42f408033e2e45685b78,
     type: 3}

@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: SpawnWorker
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: 2df6701a5100a2b4a9090fb055b5aa5b, type: 3}
-  ActionName: Spawn Worker
-  ActionDescription: Spawn a Worker that can gather resources and build structures.
   Cost: 10
-  SecondsToComplete: 0
-  HotKey: 119
+  ReadyTime: 0
+  CooldownTime: 5
   UnitToSpawn: {fileID: 8644970755313441507, guid: d4950ae3462a7e246a73ab0b32025446,
     type: 3}

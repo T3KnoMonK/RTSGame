@@ -11,7 +11,8 @@ public class PlaceBuildingAction : Action
         base.DoAction();
         if (Cost > Player.Instance.GetCurrentResource()) //This return will need to be in every action that has a resource cost as this was easier than trying to put it in Action.DoAction();
             return;
-        Parent.GetComponent<Unit>().SetActionCaller(this); //Passing reference to calling action because the event chain is passed to the player.
-        Parent.GetComponent<Unit>().SetPlayerBuildingPlaceholder(Placeholder, Building); //Just gives the prefabs to the Player object because it controls event flow from here.
+        Parent.GetComponent<Unit>().SetActionCaller(this); 
+        Parent.GetComponent<Unit>().SetPlayerBuildingPlaceholder(Placeholder, Building);
+        AttachedButton.GetComponent<ActionCooldown>().TriggerCooldown();
     }
 }

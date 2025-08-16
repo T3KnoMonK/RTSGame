@@ -33,6 +33,9 @@ class DisplayActions : MonoBehaviour
             _ChildButtons[i].onClick.RemoveAllListeners();
             _ChildButtons[i].GetComponent<Button>().onClick.AddListener(_SelectedActions[i].DoAction);
             _SelectedActions[i].SetParent(parent.gameObject);
+            _SelectedActions[i].AttachButton(_ChildButtons[i].gameObject);
+            ActionCooldown ac = _ChildButtons[i].GetComponent<ActionCooldown>();
+            ac.SetActionTimers(actions[i].CooldownTime, actions[i].ReadyTime);
             _ChildButtons[i].gameObject.SetActive(true);
         }
     }

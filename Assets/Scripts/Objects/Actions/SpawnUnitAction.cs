@@ -17,5 +17,6 @@ public class SpawnUnitAction : Action
         PayActionCost(); //Removing cost here as the event chain stays within the Action, unlike PlaceBuildingAction
         GameObject newUnit = Instantiate(UnitToSpawn, Parent.GetComponentInChildren<Waypoint>().GetWaypoint().Spawn.position, Quaternion.identity); //The only child transform should be the Waypoint
         newUnit.GetComponent<Unit>().SetMoveToWaypointOrder(Parent.GetComponent<Waypoint>().GetWaypoint().Flag.position);
+        AttachedButton.GetComponent<ActionCooldown>().TriggerCooldown();
     }
 }

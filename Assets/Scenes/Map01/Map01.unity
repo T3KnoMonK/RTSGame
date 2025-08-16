@@ -4010,6 +4010,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3030355575362900677, guid: 7a4281aaf5c2dc5458df205d8feecc6e,
+        type: 3}
+      propertyPath: CooldownMaskFill
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
