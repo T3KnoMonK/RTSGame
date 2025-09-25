@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerObjects
 {
-    public delegate void PopulateSelectedActionsDelegate(List<Action> actions, Selectable ParentObject);
+    public delegate void PopulateSelectedActionsDelegate(List<SO_Action> actions);
     public static event PopulateSelectedActionsDelegate PopulateSelectedActionsEvent;
     public delegate void RemoveSelectedActionsDelegate();
     public static event RemoveSelectedActionsDelegate RemoveSelectedActionsEvent;
@@ -87,7 +87,11 @@ public class PlayerObjects
 
     private void SignalPopulateActions()
     {
-        PopulateSelectedActionsEvent?.Invoke(selectedObjects[0].GetActions(), selectedObjects[0]);
+        if (selectedObjects[0].GetComponent<ActionContainer>() != null)
+        {
+            PopulateSelectedActionsEvent?.Invoke(selectedObjects[0].GetComponent<ActionContainer>().GetActionData());  
+        }
+        
     }
 
     private void SignalDisplayUnitInfo() //Displays when there is only one Selectable object selected. If multiple are selected the Details panel displays the unit cards of the selected units.

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Multiplayer.Center.Common;
 using UnityEngine;
 
 public class Selectable : MonoBehaviour
@@ -8,15 +9,12 @@ public class Selectable : MonoBehaviour
     [SerializeField] protected SO_Selectable SelectedSO;
     public SO_Selectable GetSO() { return SelectedSO; }
 
-    public List<Action> _Actions = new List<Action>();
-
-    public List<Action> GetActions() { return _Actions; }
-
     protected int _MaxHealth;
     protected string _Name;
     protected string _Description;
     protected float _Health;
     protected int ID;
+
     public int GetID() { return ID; }
     public float GetMaxHealth() { return _MaxHealth; }
     public float GetHealth() { return _Health; }
@@ -33,11 +31,6 @@ public class Selectable : MonoBehaviour
     public void SendWaypointEnable(bool enable)
     {
         SendMessage("ToggleVisibility", enable, SendMessageOptions.DontRequireReceiver);
-    }
-
-        public Action GetActionFromIndex(int index)
-    {
-        return _Actions[index];
     }
 
     private Renderer rend;

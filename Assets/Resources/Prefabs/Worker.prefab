@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 8644970755313441434}
   - component: {fileID: 8644970755313441433}
   - component: {fileID: 6417790822013990004}
+  - component: {fileID: 2138990849342042516}
   - component: {fileID: 3028818508068124050}
   - component: {fileID: 7899362531064187224}
   - component: {fileID: 6700066335916118500}
@@ -212,6 +213,8 @@ LineRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -233,6 +236,7 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -333,10 +337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedSO: {fileID: 11400000, guid: e1dde5ac4d5a902459cd346fefa9054a, type: 2}
-  _Actions:
-  - {fileID: 11400000, guid: 6de42725b7a311e419115eca547b996a, type: 2}
-  - {fileID: 11400000, guid: 8dfcf45129fb0254fb345320164da1ef, type: 2}
-  - {fileID: 11400000, guid: d91da056e0fd9a74988c402061a43401, type: 2}
   NavAgent: {fileID: 8644970755313441433}
   BulletParticle: {fileID: 0}
   Damage: 0
@@ -345,6 +345,22 @@ MonoBehaviour:
   Cargo: 0
   GatherRate: 0
   UnitSupply: 0
+--- !u!114 &2138990849342042516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644970755313441507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7176a154c51b80a478d27862fe85acde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionContainer
+  _ActionData:
+  - {fileID: 11400000, guid: 6de42725b7a311e419115eca547b996a, type: 2}
+  - {fileID: 11400000, guid: 8dfcf45129fb0254fb345320164da1ef, type: 2}
+  - {fileID: 11400000, guid: d91da056e0fd9a74988c402061a43401, type: 2}
 --- !u!114 &3028818508068124050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,10 +382,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8644970755313441507}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

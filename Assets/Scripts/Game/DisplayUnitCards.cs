@@ -12,9 +12,9 @@ public class DisplayUnitCards : MonoBehaviour
     private float _UnitCardWidth;
     private float _UnitCardHeight;
     private float _RightPadding = 10.0f;
-    private float _BottomPadding = 10.0f;
+    private float _BottomPadding;
 
-    [SerializeField] private int _UnitCardRows = 2;
+    [SerializeField] private int _UnitCardRows;
     [SerializeField] private int _UnitCardColumns = 10;
 
     private List<GameObject> _UnitCards = new List<GameObject>();

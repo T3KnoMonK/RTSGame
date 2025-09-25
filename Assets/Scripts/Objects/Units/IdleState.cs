@@ -12,7 +12,7 @@ public partial class UnitFSM
         public override void EnterState()
         {
             _UnitFSM.Parent.NavAgent.isStopped = true;
-            Debug.Log("Entered IDLE state");
+            //Debug.Log("Entered IDLE state");
         }
 
         public override void UpdateState()

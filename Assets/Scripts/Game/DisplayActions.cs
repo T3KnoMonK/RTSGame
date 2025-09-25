@@ -5,7 +5,7 @@ using UnityEngine.UI;
 class DisplayActions : MonoBehaviour
 {
     [SerializeField] private Button[] _ChildButtons;
-    private List<Action> _SelectedActions;
+    private List<SO_Action> _SelectedActions;
 
     private void Start()
     {
@@ -24,7 +24,7 @@ class DisplayActions : MonoBehaviour
         PlayerObjects.RemoveSelectedActionsEvent -= DisableActionButtons;
     }
 
-    public void SetSelectedActions(List<Action> actions, Selectable parent)
+    public void SetSelectedActions(List<SO_Action> actions)
     {
         _SelectedActions = actions;
         for (int i = 0; i < _SelectedActions.Count; i++)
@@ -32,33 +32,10 @@ class DisplayActions : MonoBehaviour
             _ChildButtons[i].GetComponent<Image>().sprite = _SelectedActions[i].Image;
             _ChildButtons[i].onClick.RemoveAllListeners();
             _ChildButtons[i].GetComponent<Button>().onClick.AddListener(_SelectedActions[i].DoAction);
-            _SelectedActions[i].SetParent(parent.gameObject);
-            _SelectedActions[i].AttachButton(_ChildButtons[i].gameObject);
-            ActionCooldown ac = _ChildButtons[i].GetComponent<ActionCooldown>();
-            ac.SetActionTimers(actions[i].CooldownTime, actions[i].ReadyTime);
+            //_SelectedActions[i].SetParent(parent.gameObject);
+            _SelectedActions[i].AssociateButton(_ChildButtons[i].gameObject.GetComponent<Button>());
             _ChildButtons[i].gameObject.SetActive(true);
         }
-    }
-
-    private void QueueActionToUnit(Action action)
-    {
-        if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
-        {
-            foreach (Unit unit in Player.Instance.Army.GetPlayerSelectedObjects())
-            {
-                unit.QueueAction(action);
-                Debug.Log("Added action: " + action.name + " to unit: " + unit.name + "'s action queue.");
-            }
-        }
-        else
-        {
-            foreach (Unit unit in Player.Instance.Army.GetPlayerSelectedObjects())
-            {
-                unit.CleanQueueAction(action);
-                Debug.Log("Added action: " + action.name + " to unit: " + unit.name + "'s action queue.");
-            }
-        }
-        
     }
 
     private void DisableActionButtons()

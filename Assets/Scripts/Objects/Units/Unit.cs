@@ -39,8 +39,6 @@ public class Unit : Selectable, IClickContext
     [HideInInspector] public int GatherRate;
     [HideInInspector] public int UnitSupply;
 
-    private Queue<Action> _ActionQueue = new();
-
     private void Awake()
     {
         SO_Unit unitSO = SelectedSO as SO_Unit;
@@ -79,7 +77,7 @@ public class Unit : Selectable, IClickContext
     private void Start()
     {
         ID = GetInstanceID(); //When this is in Selectable all IDs are zero (0)
-        Debug.Log(gameObject.name + " id: " + ID);
+        //Debug.Log(gameObject.name + " id: " + ID);
         NavAgent = gameObject.GetComponent<NavMeshAgent>();
         BulletParticle = gameObject.GetComponent<ParticleSystem>();
         _HealthBarScript = gameObject.GetComponent<HealthBarScript>();
@@ -110,9 +108,9 @@ public class Unit : Selectable, IClickContext
         }
     }
 
-    public void SetBuildMoveOrder(Vector3 pos, GameObject buildTarget/*Building PLaceholder*/)
+    public void SetBuildMoveOrder(Vector3 pos, GameObject buildingPlaceholder)
     {
-        _UnitFSM.CurrentBuildTarget = buildTarget;
+        _UnitFSM.CurrentBuildTarget = buildingPlaceholder;
         _UnitFSM.ManualMoveAction = true;
         _UnitFSM.ClickPos = pos;
         _UnitFSM.ChangeState(_UnitFSM.GetState("MOVE"));
@@ -134,11 +132,9 @@ public class Unit : Selectable, IClickContext
         DestroyUnitCardEvent?.Invoke(_UnitCardRef, gameObject);
     }
 
-    //private Collider _Collider;
-
     public void Disappear()
     {
-        Debug.Log("Unit disappering");
+        //Debug.Log("Unit disappering");
         gameObject.GetComponent<Collider>().enabled = false;
         foreach(MeshRenderer rend in gameObject.GetComponentsInChildren<MeshRenderer>())
         {
@@ -148,7 +144,7 @@ public class Unit : Selectable, IClickContext
 
     public void Appear()
     {
-        Debug.Log("Unit reappearing");
+        //Debug.Log("Unit reappearing");
         gameObject.GetComponent<Collider>().enabled = true;
         foreach (MeshRenderer rend in gameObject.GetComponentsInChildren<MeshRenderer>())
         {
@@ -160,24 +156,6 @@ public class Unit : Selectable, IClickContext
     {
         UnitFSM.CollectState col = (UnitFSM.CollectState)_UnitFSM.GetState("COLLECT");
         col.ResumeGathering();
-    }
-
-    public void QueueAction(Action action)
-    {
-        _ActionQueue.Enqueue(action);
-    }
-
-    //Call this once the top action is completed
-    public void DequeueAction(Action action)
-    {
-        _ActionQueue.Dequeue();
-    }
-
-    //Used to clear the queue and add actin if shift is not held down
-    public void CleanQueueAction(Action action)
-    {
-        _ActionQueue.Clear();
-        _ActionQueue.Enqueue(action);
     }
 
     public void OnRightClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
@@ -192,15 +170,9 @@ public class Unit : Selectable, IClickContext
         }
     }
 
-    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
-    {
-        //Running PlaceBuilding() here causes it to fire immediately after you set the placeholder since the mouse up event is directly after; This made me add the separate down/up click events and methods.
-    }
+    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift){}
 
-
-    private void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift)
-    {
-    }
+    private void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift){}
 
     public void OnLeftClickDown(RaycastHit hitObj, Vector3 mousePos, bool isShift)
     {
@@ -212,12 +184,10 @@ public class Unit : Selectable, IClickContext
         }
     }
 
-    //TODO: Refactor the ownership of the PlaceBuildingAction call and the BuildingPlaceholder so that the individual Worker is responsible for their own placeholder.
     public void SetPlayerBuildingPlaceholder(GameObject placeholder, GameObject building)
     {
         if (currentStructurePlaceholder != null)
         {
-            //Debug.LogWarning("Destroyed: " + currentStructurePlaceholder.name + " on Worker: " + gameObject.GetInstanceID());
             Destroy(currentStructurePlaceholder);
             Kill_WFW_Coroutine();
         }
@@ -256,23 +226,18 @@ public class Unit : Selectable, IClickContext
 
     public Coroutine WaitForWorkerCoroutine;
 
-    private Action currentActionCaller;
+    private SO_Action currentActionCaller;
 
-    public void SetActionCaller(Action actionCaller) { currentActionCaller = actionCaller; }
+    public void SetActionCaller(SO_Action actionCaller) { currentActionCaller = actionCaller; }
 
     private IEnumerator WaitForWorker(GameObject building, Vector3 worldPos)
     {
         HasWorkerArrived = false;
         if (Player.Instance.IsCursorDefault() == false) { Player.Instance.SetCursorDefault(); } //Allows the player to box select while the worker is moving
         yield return new WaitUntil(() => HasWorkerArrived);
-        //if (currentStructurePlaceholder == null)
-        //{
-        //    Debug.Log("Placeholder no longer exists.");
-        //}
         Destroy(currentStructurePlaceholder);
         GameObject newBuilding = Instantiate(building, worldPos, Quaternion.identity);
-        Player.Instance.RemoveResource(currentActionCaller.ActionCost());
-        Debug.Log(WaitForWorkerCoroutine.ToString());
+        //Player.Instance.RemoveResource(currentActionCaller.ActionCost());
     }
 
     private bool HasWorkerArrived;
@@ -280,6 +245,5 @@ public class Unit : Selectable, IClickContext
     public void WorkerHasArrived()
     {
         HasWorkerArrived = true;
-        Debug.Log("Worker arrived");
     }
 }

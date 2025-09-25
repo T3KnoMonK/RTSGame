@@ -78,7 +78,7 @@ public class Player : MonoBehaviour, IClickContext
         InputManager.RightClickUpEvent += OnRightClickUp;
         InputManager.LeftClickDownEvent += OnLeftClickDown;
         InputManager.RightClickDownEvent += OnRightClickDown;
-        Action.ActionPayCostEvent += RemoveResource;
+        //ActionContainer.ActionPayCostEvent += RemoveResource;
         //Supply.ChangeSupplyEvent += AdjustTotalSupply;
     }
 
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour, IClickContext
         InputManager.RightClickUpEvent -= OnRightClickUp;
         InputManager.LeftClickDownEvent -= OnLeftClickDown;
         InputManager.RightClickDownEvent -= OnRightClickDown;
-        Action.ActionPayCostEvent -= RemoveResource;
+        //ActionContainer.ActionPayCostEvent -= RemoveResource;
         //Supply.ChangeSupplyEvent -= AdjustTotalSupply;
     }
 
@@ -245,7 +245,7 @@ public class Player : MonoBehaviour, IClickContext
 
     public void RemoveResource(int amount)
     {
-        Debug.Log("Took " +  amount + " resources");
+        //Debug.Log("Took " +  amount + " resources");
         _CurrentResource -= amount;
         resourceCounter.text = _CurrentResource.ToString();
     }
