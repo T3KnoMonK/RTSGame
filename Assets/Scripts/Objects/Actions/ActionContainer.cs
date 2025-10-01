@@ -6,18 +6,11 @@ public class ActionContainer : MonoBehaviour
     [SerializeField] private List<SO_Action> _ActionData;
     public List<SO_Action> GetActionData() {  return _ActionData; }
 
-    public void StartCooldown(int ActionListIndex)
-    {
-        _ActionData[ActionListIndex].IsOnCooldown = true;
-        _ActionData[ActionListIndex].CurrentCooldown = _ActionData[ActionListIndex].CooldownTime;
-    }
-
     private void Start()
     {
-        GameObject owner = gameObject;
         foreach (SO_Action action in GetActionData())
         {
-            action.SetOwner(owner);
+            action.SetOwner(gameObject);
         }
     }
 
@@ -28,10 +21,17 @@ public class ActionContainer : MonoBehaviour
             if (action.IsOnCooldown)
             {
                 action.CurrentCooldown -= Time.deltaTime;
+                Debug.Log($"{action.name} is cooling down: {action.CurrentCooldown} left.");
+                if (gameObject.GetComponent<Selectable>().IsSelected)
+                {
+                    action.GetButton().GetComponent<FillMaskHelper>().GetFillMask().fillAmount = action.CurrentCooldown / action.CooldownTime;
+                }
                 if(action.CurrentCooldown <= 0.0f)
                 {
+                    Debug.Log($"{action.name} is off cooldown;");
                     action.CurrentCooldown = 0.0f;
                     action.IsOnCooldown = false;
+                    action.GetButton().GetComponent<FillMaskHelper>().GetFillMask().fillAmount = 0.0f;
                 }
             }
         }

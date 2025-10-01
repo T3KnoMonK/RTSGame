@@ -9,10 +9,12 @@ public class PlaceBuildingAction : SO_Action
 
     public override void DoAction() 
     {
+        if (IsOnCooldown) { return; }
         base.DoAction();
         if (Cost > Player.Instance.GetCurrentResource()) //This return will need to be in every action that has a resource cost as this was easier than trying to put it in Action.DoAction();
             return;
         _ActionOwner.GetComponent<Unit>().SetActionCaller(this); 
         _ActionOwner.GetComponent<Unit>().SetPlayerBuildingPlaceholder(Placeholder, Building);
+        StartCooldown();
     }
 }
