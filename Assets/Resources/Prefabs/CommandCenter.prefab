@@ -85,7 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4106023882160784556}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 5879015448485978876}
   - component: {fileID: 6490935413845349290}
   - component: {fileID: 8269425800248212609}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Flag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,6 +619,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7e202489b0ff195429985b0efc84ac0a,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e202489b0ff195429985b0efc84ac0a,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -744,6 +749,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: struct_Headquarters_A_yup
+      objectReference: {fileID: 0}
+    - target: {fileID: 2077589293580246448, guid: 310e2c451fe1fb6419f8165bb27f0606,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3046031697518998877, guid: 310e2c451fe1fb6419f8165bb27f0606,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
