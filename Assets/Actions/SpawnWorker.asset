@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e54def340827d4dbb72667fe489f52, type: 3}
   m_Name: SpawnWorker
   m_EditorClassIdentifier: 
+  ActionOwner: {fileID: 0}
   Image: {fileID: 21300000, guid: 2df6701a5100a2b4a9090fb055b5aa5b, type: 3}
+  Name: Spawn Worker
+  Description: Spawn a Worker unit.
   Cost: 10
   ReadyTime: 0
   CooldownTime: 5

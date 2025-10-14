@@ -163,11 +163,10 @@ GameObject:
   - component: {fileID: 8644970755313441439}
   - component: {fileID: 8644970755313441434}
   - component: {fileID: 8644970755313441433}
-  - component: {fileID: 6417790822013990004}
-  - component: {fileID: 2138990849342042516}
   - component: {fileID: 3028818508068124050}
   - component: {fileID: 7899362531064187224}
   - component: {fileID: 6700066335916118500}
+  - component: {fileID: 1496187034802524911}
   m_Layer: 9
   m_Name: Worker
   m_TagString: Unit
@@ -324,43 +323,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6417790822013990004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8644970755313441507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66402639e87e5da479add6e5abe25fa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SelectedSO: {fileID: 11400000, guid: e1dde5ac4d5a902459cd346fefa9054a, type: 2}
-  NavAgent: {fileID: 8644970755313441433}
-  BulletParticle: {fileID: 0}
-  Damage: 0
-  AttackSpeed: 0
-  AttackDistance: 0
-  Cargo: 0
-  GatherRate: 0
-  UnitSupply: 0
---- !u!114 &2138990849342042516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8644970755313441507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7176a154c51b80a478d27862fe85acde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionContainer
-  _ActionData:
-  - {fileID: 11400000, guid: 6de42725b7a311e419115eca547b996a, type: 2}
-  - {fileID: 11400000, guid: 8dfcf45129fb0254fb345320164da1ef, type: 2}
-  - {fileID: 11400000, guid: d91da056e0fd9a74988c402061a43401, type: 2}
 --- !u!114 &3028818508068124050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,6 +385,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6, y: 4, z: 10}
   m_Center: {x: 0, y: 2, z: 1.2}
+--- !u!114 &1496187034802524911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644970755313441507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66402639e87e5da479add6e5abe25fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  SelectedSO: {fileID: 11400000, guid: e1dde5ac4d5a902459cd346fefa9054a, type: 2}
+  _ActionData:
+  - {fileID: 11400000, guid: 6de42725b7a311e419115eca547b996a, type: 2}
+  - {fileID: 11400000, guid: 8dfcf45129fb0254fb345320164da1ef, type: 2}
+  - {fileID: 11400000, guid: d91da056e0fd9a74988c402061a43401, type: 2}
+  NavAgent: {fileID: 8644970755313441433}
+  BulletParticle: {fileID: 0}
+  Damage: 0
+  AttackSpeed: 0
+  AttackDistance: 0
+  Cargo: 0
+  GatherRate: 0
+  UnitSupply: 0
 --- !u!1 &9057913732845398539
 GameObject:
   m_ObjectHideFlags: 0

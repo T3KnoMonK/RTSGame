@@ -5,7 +5,6 @@ using UnityEngine.UI;
 class DisplayActions : MonoBehaviour
 {
     [SerializeField] private Button[] _ChildButtons;
-    private List<SO_Action> _SelectedActions;
 
     private void Start()
     {
@@ -24,16 +23,15 @@ class DisplayActions : MonoBehaviour
         PlayerObjects.RemoveSelectedActionsEvent -= DisableActionButtons;
     }
 
-    public void SetSelectedActions(List<SO_Action> actions)
+    public void SetSelectedActions(List<Action> actions, GameObject owner)
     {
-        _SelectedActions = actions;
-        for (int i = 0; i < _SelectedActions.Count; i++)
+        for (int i = 0; i < actions.Count; i++)
         {
-            _ChildButtons[i].GetComponent<Image>().sprite = _SelectedActions[i].Image;
+            Debug.Log($"Set actions index {i}");
+            int currentIndex = i; // Create local variable to capture the correct index
+            _ChildButtons[i].GetComponent<Image>().sprite = actions[i].GetActionData().Image;
             _ChildButtons[i].onClick.RemoveAllListeners();
-            _ChildButtons[i].GetComponent<Button>().onClick.AddListener(_SelectedActions[i].DoAction);
-            //_SelectedActions[i].SetParent(parent.gameObject);
-            _SelectedActions[i].AssociateButton(_ChildButtons[i].gameObject.GetComponent<Button>());
+            _ChildButtons[i].onClick.AddListener(delegate { actions[currentIndex].GetActionData().DoAction(owner); });
             _ChildButtons[i].gameObject.SetActive(true);
         }
     }

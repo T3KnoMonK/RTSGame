@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c47fcc8dfa22749a448af73e6a226b, type: 3}
   m_Name: PlaceBarracks
   m_EditorClassIdentifier: 
+  ActionOwner: {fileID: 0}
   Image: {fileID: 21300000, guid: 0a91566c5f191224ba4a62a72b3d8e23, type: 3}
+  Name: Build Barracks
+  Description: Constructs a Barracks to produce Light Units.
   Cost: 100
   ReadyTime: 0
   CooldownTime: 1

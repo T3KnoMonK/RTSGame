@@ -386,7 +386,6 @@ GameObject:
   - component: {fileID: 83549263767505868}
   - component: {fileID: 1424334189}
   - component: {fileID: 6767037496747136502}
-  - component: {fileID: 8325377850339846960}
   - component: {fileID: 7343582251415658415}
   - component: {fileID: 5335721991322492958}
   - component: {fileID: 7946553142430181883}
@@ -450,23 +449,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedSO: {fileID: 11400000, guid: 05c2feb586f4c36448fc54a5da764ac6, type: 2}
-  _InitialUnitToSpawn: {fileID: 8644970755313441507, guid: d4950ae3462a7e246a73ab0b32025446,
-    type: 3}
-  _DeployUnit: 1
---- !u!114 &8325377850339846960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9169424224707868972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7176a154c51b80a478d27862fe85acde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionContainer
   _ActionData:
   - {fileID: 11400000, guid: 67062e2f43c06d3428be88f7024212e1, type: 2}
+  _InitialUnitToSpawn: {fileID: 8644970755313441507, guid: d4950ae3462a7e246a73ab0b32025446,
+    type: 3}
+  _DeployInitialUnint: 1
 --- !u!114 &7343582251415658415
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -77,7 +75,6 @@ public class Unit : Selectable, IClickContext
     private void Start()
     {
         ID = GetInstanceID(); //When this is in Selectable all IDs are zero (0)
-        //Debug.Log(gameObject.name + " id: " + ID);
         NavAgent = gameObject.GetComponent<NavMeshAgent>();
         BulletParticle = gameObject.GetComponent<ParticleSystem>();
         _HealthBarScript = gameObject.GetComponent<HealthBarScript>();

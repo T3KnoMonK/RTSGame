@@ -442,7 +442,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedSO: {fileID: 11400000, guid: eba2b7d525c2cfe49ad4292d3a803729, type: 2}
   NavAgent: {fileID: 8644970755313441433}
-  BulletParticle: {fileID: 0}
+  BulletParticle: {fileID: 1582761733909297496}
   Damage: 0
   AttackSpeed: 0
   AttackDistance: 0

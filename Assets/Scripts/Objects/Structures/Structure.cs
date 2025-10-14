@@ -9,13 +9,13 @@ public class Structure : Selectable
     private Waypoint _Waypoint;
 
     [SerializeField] private GameObject _InitialUnitToSpawn;
-    [SerializeField] private bool _DeployUnit;
+    [SerializeField] private bool _DeployInitialUnint;
 
     void Start()
     {
         _Waypoint = GetComponent<Waypoint>();
 
-        if (_DeployUnit)
+        if (_DeployInitialUnint)
         {
             DeployInitialUnit(_Waypoint.GetWaypoint().Spawn.position, _Waypoint.GetWaypoint().Flag.position);
         }

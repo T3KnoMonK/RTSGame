@@ -448,8 +448,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedSO: {fileID: 11400000, guid: b08a55c1589643b409ab3e141f6abe6d, type: 2}
+  _ActionData:
+  - {fileID: 11400000, guid: c0bf9291d525ef84aa4eddb2ef4d372a, type: 2}
   _InitialUnitToSpawn: {fileID: 0}
-  _DeployUnit: 0
+  _DeployInitialUnint: 0
 --- !u!114 &7343582251415658415
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,23 +9,54 @@ public class Selectable : MonoBehaviour
     [SerializeField] protected SO_Selectable SelectedSO;
     public SO_Selectable GetSO() { return SelectedSO; }
 
-    protected int _MaxHealth;
-    protected string _Name;
-    protected string _Description;
     protected float _Health;
     protected int ID;
 
     public int GetID() { return ID; }
-    public float GetMaxHealth() { return _MaxHealth; }
+    public float GetMaxHealth() { return SelectedSO.MaxHealth; }
     public float GetHealth() { return _Health; }
 
-    void Start()
-    {
-        _MaxHealth = SelectedSO.MaxHealth;
-        _Name = SelectedSO.Name; ;
-        _Description = SelectedSO.Description;
+    [SerializeField] protected List<SO_Action> _ActionData = new List<SO_Action>();
 
-        _Health = _MaxHealth;
+    protected List<Action> _Actions = new List<Action>();
+    public List<Action> GetActions() { return _Actions; }
+
+    void Awake()
+    {
+        _Health = SelectedSO.MaxHealth;
+        GenereateActions();
+        //if(_ActionData != null && _ActionData.Count > 0)
+        //{
+        //    foreach (SO_Action action in _ActionData)
+        //    {
+        //        _Actions.Add(new Action(action, gameObject));
+        //    }
+        //}
+    }
+
+    private void Update()
+    {
+        if (_Actions != null && _Actions.Count > 0)
+        {
+            foreach (Action action in _Actions)
+            {
+                action.UpdateCooldown();
+            }
+        }
+    }
+
+    private void GenereateActions()
+    {
+        if (_ActionData == null) { return; }
+        if (_ActionData.Count > 0)
+        {
+            if (_Actions == null) { _Actions = new List<Action>(); }
+
+            foreach (SO_Action action in _ActionData)
+            {
+                _Actions.Add(new Action(action, gameObject));
+            }
+        }
     }
 
     public void SendWaypointEnable(bool enable)
