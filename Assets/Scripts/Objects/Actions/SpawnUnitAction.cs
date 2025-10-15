@@ -1,6 +1,4 @@
-using System.Threading;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 [CreateAssetMenu(menuName = "Actions/New Spawn Unit", fileName = "New Spawn Unit")]
 public class SpawnUnitAction : SO_Action

@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.UI;
-using TMPro;
 
 public class DisplayUnitInfo : MonoBehaviour
 {
@@ -17,8 +12,8 @@ public class DisplayUnitInfo : MonoBehaviour
     private string stats;
 
     [SerializeField] private Image SelectedImg;
-    [SerializeField] private TextMeshProUGUI SelectedStats;
-    [SerializeField] private TextMeshProUGUI SelectedDescription;
+    [SerializeField] private Text SelectedStats;
+    [SerializeField] private Text SelectedDescription;
 
     private void OnEnable()
     {

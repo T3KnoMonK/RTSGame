@@ -282,15 +282,18 @@ public class Player : MonoBehaviour, IClickContext
         {
             _CurrentSupply += amount;
         }
-        supplyCounter.text = _SupplyInUse.ToString() + " / " + _CurrentSupply.ToString();
+
+        if (supplyCounter != null)
+        {
+            supplyCounter.text = _SupplyInUse.ToString() + " / " + _CurrentSupply.ToString();
+        }
 
     }
 
     public void AdjustSupplyInUse(int amount) //Supply in use is determined by units created. The SpawnUnitAction should be the one to check bounds when affecting this value.
     {
         _SupplyInUse += amount;
-        if (supplyCounter.text != null) { supplyCounter.text = _SupplyInUse.ToString() + " / " + _CurrentSupply.ToString(); }
-        else { Debug.Log("No Supply Counter found"); }
+        if (supplyCounter != null) { supplyCounter.text = _SupplyInUse.ToString() + " / " + _CurrentSupply.ToString(); }
     }
 
 }

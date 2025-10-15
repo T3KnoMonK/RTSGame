@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public class Structure : Selectable
 {
