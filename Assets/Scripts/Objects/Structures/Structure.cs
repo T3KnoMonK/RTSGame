@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Structure : Selectable
 {
-     //public SO_Structure structureSO;
-
     private Waypoint _Waypoint;
 
     [SerializeField] private GameObject _InitialUnitToSpawn;

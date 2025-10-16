@@ -111,10 +111,11 @@ public partial class UnitFSM : FSM, IClickContext
         }
     }
 
-    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
-    {
+    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift) { }
 
-    }
+    public void OnRightClickDown(RaycastHit hitObj, Vector3 mousePos, bool isShift) { }
+
+    public void OnLeftClickDown(RaycastHit hitObj, Vector3 mousePos, bool isShift) { }
 
     public void DoCoroutine(IEnumerator routine)
     {

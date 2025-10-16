@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -250,23 +251,13 @@ public class Player : MonoBehaviour, IClickContext
         return (int)_CurrentResource;
     }
 
-    public void OnRightClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
-    {
-    }
+    public void OnRightClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift) { }
 
-    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift)
-    {
-    }
+    public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift) { }
 
+    public void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift) { }
 
-    private void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift)
-    {
-    }
-
-    public void OnLeftClickDown(RaycastHit hitObj, Vector3 mousePos, bool isShift)
-    {
-    }
-
+    public void OnLeftClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift) { }
 
     public void AdjustTotalSupply(int amount)
     {

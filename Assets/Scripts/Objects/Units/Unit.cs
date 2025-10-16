@@ -37,8 +37,9 @@ public class Unit : Selectable, IClickContext
     [HideInInspector] public int GatherRate;
     [HideInInspector] public int UnitSupply;
 
-    private void Awake()
+    new private void Awake()
     {
+        base.Awake();
         SO_Unit unitSO = SelectedSO as SO_Unit;
         _Speed = unitSO.speed;
         _MaxCargo = unitSO.maxCargo;
@@ -169,7 +170,7 @@ public class Unit : Selectable, IClickContext
 
     public void OnLeftClickUp(RaycastHit hitObj, Vector3 mousePos, bool isShift){}
 
-    private void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift){}
+    public void OnRightClickDown(RaycastHit target, Vector3 mouseWorldPos, bool shift){}
 
     public void OnLeftClickDown(RaycastHit hitObj, Vector3 mousePos, bool isShift)
     {
@@ -243,4 +244,5 @@ public class Unit : Selectable, IClickContext
     {
         HasWorkerArrived = true;
     }
+
 }

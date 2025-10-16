@@ -20,17 +20,10 @@ public class Selectable : MonoBehaviour
     protected List<Action> _Actions = new List<Action>();
     public List<Action> GetActions() { return _Actions; }
 
-    void Awake()
+    protected void Awake()
     {
         _Health = SelectedSO.MaxHealth;
-        GenereateActions();
-        //if(_ActionData != null && _ActionData.Count > 0)
-        //{
-        //    foreach (SO_Action action in _ActionData)
-        //    {
-        //        _Actions.Add(new Action(action, gameObject));
-        //    }
-        //}
+        GenerateActions();
     }
 
     private void Update()
@@ -44,7 +37,7 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    private void GenereateActions()
+    private void GenerateActions()
     {
         if (_ActionData == null) { return; }
         if (_ActionData.Count > 0)
@@ -54,6 +47,7 @@ public class Selectable : MonoBehaviour
             foreach (SO_Action action in _ActionData)
             {
                 _Actions.Add(new Action(action, gameObject));
+                Debug.Log($"Action {action.name} was added to {gameObject.name}'s action list");
             }
         }
     }

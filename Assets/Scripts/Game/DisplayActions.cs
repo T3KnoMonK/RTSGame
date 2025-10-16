@@ -31,7 +31,7 @@ class DisplayActions : MonoBehaviour
             int currentIndex = i; // Create local variable to capture the correct index
             _ChildButtons[i].GetComponent<Image>().sprite = actions[i].GetActionData().Image;
             _ChildButtons[i].onClick.RemoveAllListeners();
-            _ChildButtons[i].onClick.AddListener(delegate { actions[currentIndex].GetActionData().DoAction(owner); });
+            _ChildButtons[i].onClick.AddListener(delegate { actions[currentIndex].GetActionData().DoAction(owner); }); // delegate for the callback because I have to pass a parameter
             _ChildButtons[i].gameObject.SetActive(true);
         }
     }

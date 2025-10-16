@@ -30,18 +30,28 @@ public class Action
 
     public void UpdateCooldown()
     {
-        _CooldownTimer -= Time.deltaTime;
-
-        if(_CooldownMaskRef != null)
+        if (_IsOnCooldown)
         {
-            _CooldownMaskRef.fillAmount = _CooldownTimer / _ActionData.CooldownTime;
+            _CooldownTimer -= Time.deltaTime;
+            Debug.Log($"{_ActionData.name} has {_CooldownTimer} left on cooldown");
+
+            if (_CooldownMaskRef != null)
+            {
+                _CooldownMaskRef.fillAmount = _CooldownTimer / _ActionData.CooldownTime;
+            }
         }
+
 
         if(_CooldownTimer <= 0.0f)
         {
             _CooldownTimer = 0.0f;
             _IsOnCooldown = false;
+            if (_CooldownMaskRef != null)
+            {
+                _CooldownMaskRef.fillAmount = 0.0f;
+            }
         }
+
     }
 
 
