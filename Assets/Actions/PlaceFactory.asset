@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c47fcc8dfa22749a448af73e6a226b, type: 3}
   m_Name: PlaceFactory
   m_EditorClassIdentifier: 
-  ActionOwner: {fileID: 0}
   Image: {fileID: 21300000, guid: 6c8a15a34d3a93e40a6dcbe97657205d, type: 3}
   Name: Build Factory
   Description: Constructs a Factory to produce Heavy Units.
   Cost: 200
   ReadyTime: 0
   CooldownTime: 1
+  Type: 1
   Placeholder: {fileID: 9169424224707868972, guid: 94731a095fa6c5e43ac0ecf29241c682,
     type: 3}
   Building: {fileID: 9169424224707868972, guid: 6e4e53feee4361647b37fe7b3a2a02ba,

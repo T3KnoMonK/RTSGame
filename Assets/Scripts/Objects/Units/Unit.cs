@@ -164,6 +164,7 @@ public class Unit : Selectable, IClickContext
         {
             Player.Instance.SetCursorDefault();
             Destroy(currentStructurePlaceholder);
+            currentActionCaller.SetPlaceholderActive(false);
             
         }
     }
@@ -188,6 +189,7 @@ public class Unit : Selectable, IClickContext
         {
             Destroy(currentStructurePlaceholder);
             Kill_WFW_Coroutine();
+            //currentActionCaller.SetPlaceholderActive(false);
         }
 
         Player.Instance.SetCursorPlaceholder();
@@ -224,9 +226,9 @@ public class Unit : Selectable, IClickContext
 
     public Coroutine WaitForWorkerCoroutine;
 
-    private SO_Action currentActionCaller;
+    private Action currentActionCaller;
 
-    public void SetActionCaller(SO_Action actionCaller) { currentActionCaller = actionCaller; }
+    public void SetActionCaller(Action actionCaller) { currentActionCaller = actionCaller; }
 
     private IEnumerator WaitForWorker(GameObject building, Vector3 worldPos)
     {
@@ -235,6 +237,7 @@ public class Unit : Selectable, IClickContext
         yield return new WaitUntil(() => HasWorkerArrived);
         Destroy(currentStructurePlaceholder);
         GameObject newBuilding = Instantiate(building, worldPos, Quaternion.identity);
+        currentActionCaller.StartCooldown();
         //Player.Instance.RemoveResource(currentActionCaller.ActionCost());
     }
 
@@ -245,4 +248,11 @@ public class Unit : Selectable, IClickContext
         HasWorkerArrived = true;
     }
 
+    public void IsActivePlaceholder(bool set)
+    {
+        if(currentActionCaller != null)
+        {
+            currentActionCaller.SetPlaceholderActive(set);
+        }
+    }
 }

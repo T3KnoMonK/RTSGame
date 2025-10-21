@@ -28,10 +28,11 @@ class DisplayActions : MonoBehaviour
         for (int i = 0; i < actions.Count; i++)
         {
             Debug.Log($"Set actions index {i}");
-            int currentIndex = i; // Create local variable to capture the correct index
+            int currentIndex = i; // Create local variable to capture the correct index for the lambda
             _ChildButtons[i].GetComponent<Image>().sprite = actions[i].GetActionData().Image;
+            actions[i].SetCooldownMaskRef(_ChildButtons[i].GetComponent<FillMaskHelper>().GetFillMask());
             _ChildButtons[i].onClick.RemoveAllListeners();
-            _ChildButtons[i].onClick.AddListener(delegate { actions[currentIndex].GetActionData().DoAction(owner); }); // delegate for the callback because I have to pass a parameter
+            _ChildButtons[i].onClick.AddListener(delegate { actions[currentIndex].DoAction(owner); }); // delegate for the callback because I have to pass a parameter
             _ChildButtons[i].gameObject.SetActive(true);
         }
     }

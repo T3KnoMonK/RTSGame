@@ -10,5 +10,8 @@ public class SO_Action : ScriptableObject
     public float ReadyTime;
     public float CooldownTime;
 
+    public enum ActionType { Immediate, Placement }
+    public ActionType Type;
+
     public virtual void DoAction(GameObject target) { }
 }

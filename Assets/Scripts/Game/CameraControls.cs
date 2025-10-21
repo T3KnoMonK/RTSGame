@@ -24,19 +24,19 @@ public class CameraControls : MonoBehaviour
         //Keyboard Controls
 
         //Camera Pan
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
             if (transform.position.y >= MapManager.Instance.GetMapMinBounds().y) { mainCam.transform.position += Vector3.back * CameraPanMovementScale; }
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             if (transform.position.x <= MapManager.Instance.GetMapMaxBounds().x) { mainCam.transform.position += Vector3.right * CameraPanMovementScale; }
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             if (transform.position.x >= MapManager.Instance.GetMapMinBounds().x) { mainCam.transform.position += Vector3.left * CameraPanMovementScale; }
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             if (transform.position.y <= MapManager.Instance.GetMapMaxBounds().y) { mainCam.transform.position += Vector3.forward * CameraPanMovementScale; }
         }

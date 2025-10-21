@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static SO_Action;
 
 public class Action
 {
@@ -13,6 +14,9 @@ public class Action
     private bool _IsOnCooldown = false;
 
     private Image _CooldownMaskRef;
+    private bool _IsPlaceholderActive;
+    public void SetPlaceholderActive(bool set) {  _IsPlaceholderActive = set; }
+
     public void SetCooldownMaskRef(Image mask) {  _CooldownMaskRef = mask; }
 
     public Action(SO_Action actionData, GameObject owner)
@@ -20,6 +24,27 @@ public class Action
         _ActionData = actionData;
         _Owner = owner;
     }
+
+    public void DoAction(GameObject target)
+    {
+        if (_IsOnCooldown) { return; }
+        switch (_ActionData.Type)
+        {
+            case ActionType.Immediate:
+                _ActionData.DoAction(target);
+                StartCooldown();
+                break;
+            case ActionType.Placement:
+                if (!_IsPlaceholderActive)
+                {
+                    target.GetComponent<Unit>().SetActionCaller(this);
+                    _ActionData.DoAction(target);
+                }
+                break;
+            default:
+                break;
+        }
+}
 
     public void StartCooldown()
     {
@@ -51,8 +76,5 @@ public class Action
                 _CooldownMaskRef.fillAmount = 0.0f;
             }
         }
-
     }
-
-
 }

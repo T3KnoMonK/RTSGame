@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c47fcc8dfa22749a448af73e6a226b, type: 3}
   m_Name: PlaceSupplyDepot
   m_EditorClassIdentifier: 
-  ActionOwner: {fileID: 0}
   Image: {fileID: 21300000, guid: 98223b7c6f38f1b42bb764648fc8bb02, type: 3}
   Name: Build Supplies
   Description: Construct a Supply Depot to increase population cap.
   Cost: 50
   ReadyTime: 0
   CooldownTime: 1
+  Type: 1
   Placeholder: {fileID: 9169424224707868972, guid: 67902505cca6be442b19119ee9a1ab1a,
     type: 3}
   Building: {fileID: 9169424224707868972, guid: d1643afac11a31c4abcc020cff934e5e,
