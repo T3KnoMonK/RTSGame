@@ -49,9 +49,9 @@ public class Resource : Selectable
         {
             Unit tmp = _WorkerQ[0];
             //tmp.Appear();
-            Debug.Log("Popping " + tmp.name);
+            //Debug.Log("Popping " + tmp.name);
             _WorkerQ.RemoveAt(0);
-            Debug.Log("Workers in Queue: " + PrintAllWorkers(_WorkerQ));
+            //Debug.Log("Workers in Queue: " + PrintAllWorkers(_WorkerQ));
             _IsWorkerGathering = false;
             //StartNextWorkerGathering(); //Shouldn't need this here if _IsWorkerGathering flag is being set correctly
             return tmp;
@@ -63,9 +63,9 @@ public class Resource : Selectable
 
     public void AddToQ(Unit unit)
     {
-        Debug.Log("Adding " + unit.name);
+        //Debug.Log("Adding " + unit.name);
         _WorkerQ.Add(unit);
-        Debug.Log("Workers in Queue: " + PrintAllWorkers(_WorkerQ));
+        //Debug.Log("Workers in Queue: " + PrintAllWorkers(_WorkerQ));
     }
 
     public void StartNextWorkerGathering()

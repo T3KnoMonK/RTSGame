@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Construct a Supply Depot to increase population cap.
   Cost: 50
   ReadyTime: 0
-  CooldownTime: 1
+  CooldownTime: 20
   Type: 1
   Placeholder: {fileID: 9169424224707868972, guid: 67902505cca6be442b19119ee9a1ab1a,
     type: 3}

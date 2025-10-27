@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum ActionType { Immediate, Placement }
+
 [CreateAssetMenu(menuName = "Actions/New Action", fileName = "New Action")]
 public class SO_Action : ScriptableObject
 {
@@ -10,7 +12,6 @@ public class SO_Action : ScriptableObject
     public float ReadyTime;
     public float CooldownTime;
 
-    public enum ActionType { Immediate, Placement }
     public ActionType Type;
 
     public virtual void DoAction(GameObject target) { }

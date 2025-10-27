@@ -5,28 +5,27 @@ public class PlayerObjects
 {
     public delegate void PopulateSelectedActionsDelegate(List<Action> actions, GameObject owner);
     public static event PopulateSelectedActionsDelegate PopulateSelectedActionsEvent;
-    public delegate void RemoveSelectedActionsDelegate();
+    public delegate void RemoveSelectedActionsDelegate(List<Action> actions, GameObject owner);
     public static event RemoveSelectedActionsDelegate RemoveSelectedActionsEvent;
+
 
     public delegate void PopulateSelectedInfoDelegate(Selectable unit);
     public static event PopulateSelectedInfoDelegate PopulateSelectedInfoEvent;
 
     private List<Selectable> selectedObjects = new List<Selectable>();
 
-    [SerializeField]
-    private DisplayUnitCards unitCardPanel = null; 
+    [SerializeField] private DisplayUnitCards unitCardPanel = null; 
     public DisplayUnitCards GetUnitCardPanel() { return unitCardPanel; }
-    [SerializeField]
-    private DisplayActions actionsPanel = null;
-    [SerializeField]
-    private GameObject unitInfoPanel = null;
+
+    [SerializeField] private DisplayActions actionsPanel = null;
+    [SerializeField] private GameObject unitInfoPanel = null;
 
     public PlayerObjects()
     {
         unitCardPanel = GameObject.FindGameObjectWithTag("UnitCardPanel").GetComponent<DisplayUnitCards>();
         actionsPanel = GameObject.FindGameObjectWithTag("ActionsPanel").GetComponent<DisplayActions>();
         unitInfoPanel = GameObject.Find("UnitInfo");
-        unitInfoPanel.SetActive(false);
+        //unitInfoPanel.SetActive(false);
     }
 
     public List<Selectable> GetPlayerSelectedObjects()
@@ -60,38 +59,35 @@ public class PlayerObjects
 
     public void ClearSelectedObjects()
     {
+        SignalRemoveActions();
         unitCardPanel.RemoveUnitCardsFromUI();
         unitInfoPanel?.SetActive(false);
         ToggleIsSelected(false);
-        SignalRemoveActions();
         selectedObjects.Clear();
     }
     //TODO: Implement actions panel for multiple selected units, only actions that apply to all selected units will be available (Move,Attack,Stop...)
 
     public void AddSingleObjectToSelected(Selectable go)
     {
-        ClearSelectedObjects();
+        if (selectedObjects.Count > 0) { ClearSelectedObjects(); }
         selectedObjects.Add(go);
         ToggleIsSelected(true);
         unitInfoPanel.SetActive(true);
         SignalDisplayUnitInfo();
-        //if (go.gameObject.GetComponent<Unit>()) { unitCardPanel.AddUnitCardsToUI(); } //Do not display card if only one object is selcted, Display SelectedInfo
         SignalPopulateActions();
     }
 
     private void SignalRemoveActions()
     {
-        RemoveSelectedActionsEvent?.Invoke();
+        if (selectedObjects.Count > 0)
+        { 
+            RemoveSelectedActionsEvent?.Invoke(selectedObjects[0].GetActions(), selectedObjects[0].gameObject); 
+        }
     }
 
     private void SignalPopulateActions()
     {
-        //Debug.Log($"{selectedObjects[0].name} actions are {selectedObjects[0].GetActions()}");
-        if (selectedObjects[0].GetActions() != null)
-        {
-            PopulateSelectedActionsEvent?.Invoke(selectedObjects[0].GetActions(), selectedObjects[0].gameObject);
-        }
-
+        PopulateSelectedActionsEvent?.Invoke(selectedObjects[0].GetActions(), selectedObjects[0].gameObject);
     }
 
     private void SignalDisplayUnitInfo() //Displays when there is only one Selectable object selected. If multiple are selected the Details panel displays the unit cards of the selected units.
@@ -102,8 +98,7 @@ public class PlayerObjects
     public void AddMultipleObjectsToSelected(List<Selectable> list)
     {
         if (list.Count == 0) return;
-
-        ClearSelectedObjects();
+        if (selectedObjects.Count > 0) { ClearSelectedObjects(); }
         list.ForEach(x => { if (x.gameObject.GetComponent<Unit>()) { selectedObjects.Add(x);} });
         ToggleIsSelected(true);
         unitCardPanel.AddUnitCardsToUI();

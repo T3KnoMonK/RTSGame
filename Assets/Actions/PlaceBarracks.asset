@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Constructs a Barracks to produce Light Units.
   Cost: 100
   ReadyTime: 0
-  CooldownTime: 1
+  CooldownTime: 10
   Type: 1
   Placeholder: {fileID: 9169424224707868972, guid: 14ce533b2958d7f42813eb7d4eb1cf8c,
     type: 3}

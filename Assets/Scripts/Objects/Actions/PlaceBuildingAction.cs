@@ -11,8 +11,8 @@ public class PlaceBuildingAction : SO_Action
     {
         if (Cost > Player.Instance.GetCurrentResource())
             return;
-        
-        target.GetComponent<Unit>().SetPlayerBuildingPlaceholder(Placeholder, Building);
-        target.GetComponent<Unit>().IsActivePlaceholder(true);
+
+        target.GetComponent<Unit>().StartBuild(Placeholder, Building);
+        Debug.Log("Place Buildling action called");
     }
 }

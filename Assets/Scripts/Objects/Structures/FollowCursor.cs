@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class FollowCursor : MonoBehaviour
 {
-    //This is script is only on Structure Placeholders so is only instantiated when the player is placing a building
+    //This script is only on Structure Placeholders so is only instantiated when the player is placing a building
 
     private Camera _Camera;
     private Transform _ObjectTransform;

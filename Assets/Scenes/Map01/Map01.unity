@@ -3970,8 +3970,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7043423884275089048, guid: 6c9fb8e2981e45042ac82d31bb6ed4ee,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7043423885686860423}
   m_SourcePrefab: {fileID: 100100000, guid: 6c9fb8e2981e45042ac82d31bb6ed4ee, type: 3}
+--- !u!1 &7043423885686860422 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7043423884275089048, guid: 6c9fb8e2981e45042ac82d31bb6ed4ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 7043423885686860421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7043423885686860423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7043423885686860422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb08079de1ee2144fa1e80f40fa11619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CursorManager
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

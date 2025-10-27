@@ -8,11 +8,17 @@ public class SpawnUnitAction : SO_Action
     //Target is the building that is spawning the unit
     public override void DoAction(GameObject target)
     {
-        int supply = ((SO_Unit)UnitToSpawn.GetComponent<Unit>().GetSO()).supplyCost;
-        if (Player.Instance.GetCurrentTotalSupply() - Player.Instance.GetCurrentSupplyInUse() < supply) { Debug.Log("Not enough supply to create unit!"); return; }
         if (Cost > Player.Instance.GetCurrentResource()) //This return will need to be in every action that has a resource cost as this was easier than trying to put it in Action.DoAction();
             return;
-        GameObject newUnit = Instantiate(UnitToSpawn, target.GetComponentInChildren<Waypoint>().GetWaypoint().Spawn.position, Quaternion.identity); //The only child transform should be the Waypoint
+
+        int SupplyNeed = (UnitToSpawn.GetComponent<Unit>().GetSO() as SO_Unit).supplyCost;
+        if (SupplyNeed > Player.Instance.GetAvailableSupply()) 
+            { 
+                Debug.Log("Not enough supply to create unit!"); 
+                return; 
+            }
+
+        GameObject newUnit = Instantiate(UnitToSpawn, target.GetComponentInChildren<Waypoint>().GetWaypoint().Spawn.position, Quaternion.identity);
         newUnit.GetComponent<Unit>().SetMoveToWaypointOrder(target.GetComponent<Waypoint>().GetWaypoint().Flag.position);
     }
 }

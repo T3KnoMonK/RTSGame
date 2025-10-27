@@ -28,13 +28,19 @@ public class Selectable : MonoBehaviour
 
     private void Update()
     {
-        if (_Actions != null && _Actions.Count > 0)
+        foreach (Action action in _Actions)
         {
-            foreach (Action action in _Actions)
-            {
-                action.UpdateCooldown();
-            }
+            Debug.Log($"Calling action update for {action.GetActionData().name}");
+            action.UpdateCooldown();
         }
+        //if (_Actions != null && _Actions.Count > 0)
+        //{
+        //    foreach (Action action in _Actions)
+        //    {
+        //        action.UpdateCooldown();
+
+        //    }
+        //}
     }
 
     private void GenerateActions()
@@ -47,7 +53,6 @@ public class Selectable : MonoBehaviour
             foreach (SO_Action action in _ActionData)
             {
                 _Actions.Add(new Action(action, gameObject));
-                Debug.Log($"Action {action.name} was added to {gameObject.name}'s action list");
             }
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static SO_Action;
+//using static SO_Action;
 
 public class Action
 {
@@ -12,10 +12,14 @@ public class Action
 
     private float _CooldownTimer = 0f;
     private bool _IsOnCooldown = false;
+    public bool IsOnCooldown() { return _IsOnCooldown; }
+    public float GetCurrentCooldown() { return _CooldownTimer; }
+
+    private bool _IsActive;
+    public bool GetActive() { return _IsActive; }
+    public void SetActive(bool value) { _IsActive = value; }
 
     private Image _CooldownMaskRef;
-    private bool _IsPlaceholderActive;
-    public void SetPlaceholderActive(bool set) {  _IsPlaceholderActive = set; }
 
     public void SetCooldownMaskRef(Image mask) {  _CooldownMaskRef = mask; }
 
@@ -27,53 +31,49 @@ public class Action
 
     public void DoAction(GameObject target)
     {
+        Debug.Log("Calling DoAction");
         if (_IsOnCooldown) { return; }
+        Debug.Log("DoAction is off cooldown");
         switch (_ActionData.Type)
         {
             case ActionType.Immediate:
+                Debug.Log("Calling Calling Immediate abiligy");
                 _ActionData.DoAction(target);
                 StartCooldown();
                 break;
             case ActionType.Placement:
-                if (!_IsPlaceholderActive)
-                {
-                    target.GetComponent<Unit>().SetActionCaller(this);
-                    _ActionData.DoAction(target);
-                }
+                Debug.Log("Calling Placement ability");
+                target.GetComponent<Unit>().SetActionCaller(this);
+                _ActionData.DoAction(target);
+                //StartCooldown is called at the end of the WaitForWorker coroutine, when the building is instantiated
                 break;
             default:
                 break;
         }
-}
+    }
 
     public void StartCooldown()
     {
-        if(_IsOnCooldown) { return; }
         _CooldownTimer = _ActionData.CooldownTime;
         _IsOnCooldown = true;
+        //Debug.Log($"{_ActionData.name} should be on cooldown: {_IsOnCooldown}");
     }
 
     public void UpdateCooldown()
     {
+        //Debug.Log($"{_ActionData.name} cooldown: {_IsOnCooldown}/ active: {_IsActive}");
         if (_IsOnCooldown)
         {
             _CooldownTimer -= Time.deltaTime;
-            Debug.Log($"{_ActionData.name} has {_CooldownTimer} left on cooldown");
+            if (_CooldownTimer <= 0.0f)
+            {
+                _CooldownTimer = 0.0f;
+                _IsOnCooldown = false;
+            }
 
-            if (_CooldownMaskRef != null)
+            if (_IsActive)
             {
                 _CooldownMaskRef.fillAmount = _CooldownTimer / _ActionData.CooldownTime;
-            }
-        }
-
-
-        if(_CooldownTimer <= 0.0f)
-        {
-            _CooldownTimer = 0.0f;
-            _IsOnCooldown = false;
-            if (_CooldownMaskRef != null)
-            {
-                _CooldownMaskRef.fillAmount = 0.0f;
             }
         }
     }

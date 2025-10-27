@@ -55,14 +55,7 @@ public class Player : MonoBehaviour, IClickContext
 
     private Vector3 _LastHitPoint;
 
-    private Cursor currentCursor;
-    private Cursor defaultCursor;
-    private enum CursorState { Default, Placeholder }
-    private CursorState cursorState = CursorState.Default;
-    public bool IsCursorPlaceholder() { return cursorState == CursorState.Placeholder ? true : false; }
-    public bool IsCursorDefault() { return cursorState == CursorState.Default? true : false; }
-    public void SetCursorDefault() { cursorState = CursorState.Default; }
-    public void SetCursorPlaceholder() {  cursorState = CursorState.Placeholder; }
+
 
     private PlayerObjects army;
     public PlayerObjects Army { get => army; set => army = value; }
@@ -98,7 +91,7 @@ public class Player : MonoBehaviour, IClickContext
 
     private void Update()
     {
-        if (cursorState == CursorState.Default) MouseDrag();
+        if (CursorManager.Instance.GetCursorState() == CursorManager.CursorState.Default) MouseDrag();
 
         if (Input.GetButtonDown("Left Click"))
         {
@@ -107,6 +100,7 @@ public class Player : MonoBehaviour, IClickContext
         }
         if (Input.GetButtonUp("Left Click"))
         {
+            if(CursorManager.Instance.GetCursorState() == CursorManager.CursorState.Placeholder) { return; }
             if (isMouseDragging)
             {
                 List<Selectable> selected = GetAllObjectsSelected();
@@ -128,9 +122,17 @@ public class Player : MonoBehaviour, IClickContext
                 if (go != null)
                 {
                     if (go.tag == "Selectable" || go.tag == "Structure" || go.tag == "Depot" || go.tag == "Resource")
+                    {
                         Army.AddSingleObjectToSelected(go.GetComponent<Selectable>());
+                    }
                     else if (go.tag == "Ground")
-                        Army.ClearSelectedObjects();
+                    {
+                        if (Army.GetSelectedObjectCount() > 0)
+                        {
+                            Army.ClearSelectedObjects();
+                        }
+                    }
+                        
                 }
             }
             ClearBoxSelect();
@@ -285,6 +287,13 @@ public class Player : MonoBehaviour, IClickContext
     {
         _SupplyInUse += amount;
         if (supplyCounter != null) { supplyCounter.text = _SupplyInUse.ToString() + " / " + _CurrentSupply.ToString(); }
+    }
+
+    public int GetAvailableSupply()
+    {
+        int s = _CurrentSupply - _SupplyInUse;
+        Debug.Log($"Available Supply is : {s}");
+        return s;
     }
 
 }

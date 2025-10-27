@@ -5,13 +5,18 @@ using UnityEngine.AI;
 
 public class Unit : Selectable, IClickContext
 {
-    public delegate void PlacedBuildingDelegate();
-    public static PlacedBuildingDelegate PlacedBuildingEvent;
+    public delegate void StartBuildEventDelegate(GameObject placeholder);
+    public static StartBuildEventDelegate StartBuildEvent;
+
+    public delegate void PlaceBuildingEventDelegate();
+    public static PlaceBuildingEventDelegate PlacedBuildingEvent;
+
+    public delegate void CancelBuildEventDelegate();
+    public static CancelBuildEventDelegate CancelBuildEvent;
 
     public delegate void DestroyUnitCardDelegate(GameObject card, GameObject unit); //need to pass unit so DisplayUnitCards can call for the Unit to be destroyed after destroying the card
     public static DestroyUnitCardDelegate DestroyUnitCardEvent;
 
-    private GameObject currentStructurePlaceholder;
     private GameObject currentBuildingToPlace;
 
     protected UnitFSM _UnitFSM;
@@ -106,11 +111,11 @@ public class Unit : Selectable, IClickContext
         }
     }
 
-    public void SetBuildMoveOrder(Vector3 pos, GameObject buildingPlaceholder)
+    public void SetBuildMoveOrder(GameObject placeholder)
     {
-        _UnitFSM.CurrentBuildTarget = buildingPlaceholder;
+        _UnitFSM.CurrentBuildTarget = placeholder;
         _UnitFSM.ManualMoveAction = true;
-        _UnitFSM.ClickPos = pos;
+        _UnitFSM.ClickPos = placeholder.transform.position;
         _UnitFSM.ChangeState(_UnitFSM.GetState("MOVE"));
     }
 
@@ -132,7 +137,6 @@ public class Unit : Selectable, IClickContext
 
     public void Disappear()
     {
-        //Debug.Log("Unit disappering");
         gameObject.GetComponent<Collider>().enabled = false;
         foreach(MeshRenderer rend in gameObject.GetComponentsInChildren<MeshRenderer>())
         {
@@ -142,7 +146,6 @@ public class Unit : Selectable, IClickContext
 
     public void Appear()
     {
-        //Debug.Log("Unit reappearing");
         gameObject.GetComponent<Collider>().enabled = true;
         foreach (MeshRenderer rend in gameObject.GetComponentsInChildren<MeshRenderer>())
         {
@@ -160,12 +163,10 @@ public class Unit : Selectable, IClickContext
     {
         if (!IsSelected) { return; }
 
-        if (Player.Instance.IsCursorPlaceholder())
+        if (CursorManager.Instance.IsCursorPlaceholder())
         {
-            Player.Instance.SetCursorDefault();
-            Destroy(currentStructurePlaceholder);
-            currentActionCaller.SetPlaceholderActive(false);
-            
+            CancelBuildEvent.Invoke();
+            Kill_WFW_Coroutine();
         }
     }
 
@@ -177,69 +178,60 @@ public class Unit : Selectable, IClickContext
     {
         if (!IsSelected) { return; }
         //Because the mouse down event already fired when you clicked the action button this should be the next mouse down event
-        if (Player.Instance.IsCursorPlaceholder())
+        if (CursorManager.Instance.IsCursorPlaceholder())
         {
-            PlaceBuilding(currentBuildingToPlace, currentStructurePlaceholder.transform.position);
+            PutDownPlaceholder(currentBuildingToPlace, CursorManager.Instance.GetPlaceholderPos());
         }
     }
 
-    public void SetPlayerBuildingPlaceholder(GameObject placeholder, GameObject building)
-    {
-        if (currentStructurePlaceholder != null)
-        {
-            Destroy(currentStructurePlaceholder);
-            Kill_WFW_Coroutine();
-            //currentActionCaller.SetPlaceholderActive(false);
-        }
 
-        Player.Instance.SetCursorPlaceholder();
+    // StartBuild signals the placeholder to change. Anything that happens at the start of the action triggering should happen here. This includes handling a placeholder already existing and the unit being in the middle of an action already.
+    public void StartBuild(GameObject placeholder, GameObject building)
+    {
+        StartBuildEvent.Invoke(Instantiate(placeholder, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity));
+        Kill_WFW_Coroutine();
         currentBuildingToPlace = building;
-        currentStructurePlaceholder = Instantiate(placeholder, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
     }
 
-    public void PlaceBuilding(GameObject building, Vector3 worldPos)
+    public void PutDownPlaceholder(GameObject building, Vector3 worldPos)
     {
-        if (currentStructurePlaceholder.GetComponent<CheckObstruction>()!.IsObsructed() == false)
+        if (CursorManager.Instance.GetPlaceholder().GetComponent<CheckObstruction>().IsObsructed() == false)
         {
+            CursorManager.Instance.GetPlaceholder().GetComponent<FollowCursor>().StopFollowing();
             CallWorkerMoveOrder();
-            currentStructurePlaceholder.GetComponent<FollowCursor>().StopFollowing();
-            WaitForWorkerCoroutine = StartCoroutine(WaitForWorker(building, worldPos));
         }
     }
 
     public void Kill_WFW_Coroutine()
     {
-        StopCoroutine(WaitForWorkerCoroutine);
+        if(WaitForWorkerCoroutine != null)
+        {
+            StopCoroutine(WaitForWorkerCoroutine);
+        }
     }
 
     private void CallWorkerMoveOrder()
     {
-        foreach (Selectable unit in Player.Instance.Army.GetPlayerSelectedObjects())
+        if(Player.Instance.Army.GetPlayerSelectedObjects().Count > 0)
         {
-            Unit tmp = unit as Unit;
-            if (tmp.GetUnitFSM().parentSO.unitType == 0)
+            Unit tmp;
+
+            if (Player.Instance.Army.GetPlayerSelectedObjects()[0].GetComponent<Unit>() != null)
             {
-                tmp.SetBuildMoveOrder(currentStructurePlaceholder.transform.position, currentStructurePlaceholder);
+                tmp = Player.Instance.Army.GetPlayerSelectedObjects()[0] as Unit;
+
+                if (tmp.GetUnitFSM().parentSO.unitType == 0)
+                {
+                    tmp.SetBuildMoveOrder(CursorManager.Instance.GetPlaceholder());
+                    WaitForWorkerCoroutine = StartCoroutine("WaitForWorker");
+                }
             }
         }
     }
 
-    public Coroutine WaitForWorkerCoroutine;
-
     private Action currentActionCaller;
 
     public void SetActionCaller(Action actionCaller) { currentActionCaller = actionCaller; }
-
-    private IEnumerator WaitForWorker(GameObject building, Vector3 worldPos)
-    {
-        HasWorkerArrived = false;
-        if (Player.Instance.IsCursorDefault() == false) { Player.Instance.SetCursorDefault(); } //Allows the player to box select while the worker is moving
-        yield return new WaitUntil(() => HasWorkerArrived);
-        Destroy(currentStructurePlaceholder);
-        GameObject newBuilding = Instantiate(building, worldPos, Quaternion.identity);
-        currentActionCaller.StartCooldown();
-        //Player.Instance.RemoveResource(currentActionCaller.ActionCost());
-    }
 
     private bool HasWorkerArrived;
 
@@ -248,11 +240,17 @@ public class Unit : Selectable, IClickContext
         HasWorkerArrived = true;
     }
 
-    public void IsActivePlaceholder(bool set)
+    public Coroutine WaitForWorkerCoroutine;
+
+    private IEnumerator WaitForWorker()
     {
-        if(currentActionCaller != null)
-        {
-            currentActionCaller.SetPlaceholderActive(set);
-        }
+        HasWorkerArrived = false;
+        if (CursorManager.Instance.IsCursorDefault() == false) { CursorManager.Instance.SetCursorIsDefault(); } //Allows the player to box select while the worker is moving
+        yield return new WaitUntil(() => HasWorkerArrived);
+        GameObject newBuilding = Instantiate(currentBuildingToPlace, CursorManager.Instance.GetPlaceholderPos(), Quaternion.identity);
+        PlacedBuildingEvent.Invoke();
+        Debug.Log($"Calling StartCooldown on {currentActionCaller.GetActionData().name}");
+        currentActionCaller.StartCooldown();
     }
+
 }

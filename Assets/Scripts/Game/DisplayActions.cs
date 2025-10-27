@@ -9,6 +9,7 @@ class DisplayActions : MonoBehaviour
     private void Start()
     {
         _ChildButtons = GetComponentsInChildren<Button>();
+        ClearButtons();
     }
 
     private void OnEnable()
@@ -25,21 +26,41 @@ class DisplayActions : MonoBehaviour
 
     public void SetSelectedActions(List<Action> actions, GameObject owner)
     {
+
         for (int i = 0; i < actions.Count; i++)
         {
-            Debug.Log($"Set actions index {i}");
-            int currentIndex = i; // Create local variable to capture the correct index for the lambda
+            _ChildButtons[i].gameObject.SetActive(true);
+
+            int currentIndex = i; // Create local variable to capture the correct index for AddListener(). Not having this causes index out of bounds
+
             _ChildButtons[i].GetComponent<Image>().sprite = actions[i].GetActionData().Image;
             actions[i].SetCooldownMaskRef(_ChildButtons[i].GetComponent<FillMaskHelper>().GetFillMask());
+            _ChildButtons[i].GetComponent<FillMaskHelper>().GetFillMask().fillAmount = actions[i].GetCurrentCooldown();
+
             _ChildButtons[i].onClick.RemoveAllListeners();
-            _ChildButtons[i].onClick.AddListener(delegate { actions[currentIndex].DoAction(owner); }); // delegate for the callback because I have to pass a parameter
-            _ChildButtons[i].gameObject.SetActive(true);
+            _ChildButtons[i].onClick.AddListener(() => actions[currentIndex].DoAction(owner)); // lamdba so I can pass a parameter
+
+            actions[i].SetActive(true);
+            Debug.Log($"The {actions[i].GetActionData().Name} action is set to true: {actions[i].GetActive()}");
         }
     }
 
-    private void DisableActionButtons()
+    private void DisableActionButtons(List<Action> actions, GameObject owner)
     {
-        for(int i = 0; i < _ChildButtons.Length; i++)
+        foreach (Action action in actions)
+        {
+            if (action.GetActive())
+            {
+                action.SetActive(false);
+            }
+        }
+
+        ClearButtons();
+    }
+
+    private void ClearButtons()
+    {
+        for (int i = 0; i < _ChildButtons.Length; i++)
         {
             if (_ChildButtons[i].gameObject.activeSelf == true)
             {
@@ -47,6 +68,4 @@ class DisplayActions : MonoBehaviour
             }
         }
     }
-
-
 }

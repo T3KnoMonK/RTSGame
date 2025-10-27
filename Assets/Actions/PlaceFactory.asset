@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Constructs a Factory to produce Heavy Units.
   Cost: 200
   ReadyTime: 0
-  CooldownTime: 1
+  CooldownTime: 20
   Type: 1
   Placeholder: {fileID: 9169424224707868972, guid: 94731a095fa6c5e43ac0ecf29241c682,
     type: 3}
