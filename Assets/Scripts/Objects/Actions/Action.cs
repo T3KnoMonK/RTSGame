@@ -38,8 +38,10 @@ public class Action
         {
             case ActionType.Immediate:
                 //Debug.Log("Calling Calling Immediate abiligy");
-                _ActionData.DoAction(target);
-                StartCooldown();
+                if (_ActionData.DoAction(target) == 1)
+                {
+                    StartCooldown();
+                }
                 break;
             case ActionType.Placement:
                 //Debug.Log("Calling Placement ability");

@@ -250,7 +250,7 @@ public class Unit : Selectable, IClickContext
         yield return new WaitUntil(() => HasWorkerArrived);
         GameObject newBuilding = Instantiate(currentBuildingToPlace, CursorManager.Instance.GetPlaceholderPos(), Quaternion.identity);
         PlacedBuildingEvent.Invoke();
-        Debug.Log($"Calling StartCooldown on {currentActionCaller.GetActionData().name}");
+        //Debug.Log($"Calling StartCooldown on {currentActionCaller.GetActionData().name}");
         currentActionCaller.StartCooldown();
     }
 

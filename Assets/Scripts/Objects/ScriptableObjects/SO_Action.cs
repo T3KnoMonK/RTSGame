@@ -14,5 +14,5 @@ public class SO_Action : ScriptableObject
 
     public ActionType Type;
 
-    public virtual void DoAction(GameObject target) { }
+    public virtual int DoAction(GameObject target)  { return 0; }
 }
