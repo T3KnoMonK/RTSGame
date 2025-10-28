@@ -52,25 +52,20 @@ public class CursorManager : MonoBehaviour
 
     private void SetPlaceholder(GameObject placeholder)
     {
-        if (_PlaceholderObj != null) { DestroyPlaceholder(); } //Need this so the current placeholder does not exist erroneously if you set the placeholder (left click while it's active) then start another place building action.
+        if (_PlaceholderObj != null) { Destroy(_PlaceholderObj); } //Need this so the current placeholder does not exist erroneously if you set the placeholder (left click while it's active) then start another place building action.
         _PlaceholderObj = placeholder;
         SetCursorIsPlaceholder();
     }
 
     private void CancelBuild()
     {
-        DestroyPlaceholder();
+        if (_PlaceholderObj != null) { Destroy(_PlaceholderObj); }
         SetCursorIsDefault();
-    }
-
-    private void DestroyPlaceholder()
-    {
-        if(_PlaceholderObj != null) { Destroy(_PlaceholderObj); }
     }
 
     private void SetBuilding()
     {
-        DestroyPlaceholder();
+        if (_PlaceholderObj != null) { Destroy(_PlaceholderObj); }
         SetCursorIsDefault();
     }
 }

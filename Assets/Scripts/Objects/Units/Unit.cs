@@ -95,6 +95,7 @@ public class Unit : Selectable, IClickContext
 
     private void Update()
     {
+        base.Update();
         _UnitFSM.Update();
     }
 

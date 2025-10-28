@@ -41,7 +41,7 @@ class DisplayActions : MonoBehaviour
             _ChildButtons[i].onClick.AddListener(() => actions[currentIndex].DoAction(owner)); // lamdba so I can pass a parameter
 
             actions[i].SetActive(true);
-            Debug.Log($"The {actions[i].GetActionData().Name} action is set to true: {actions[i].GetActive()}");
+            //Debug.Log($"The {actions[i].GetActionData().Name} action is set to true: {actions[i].GetActive()}");
         }
     }
 

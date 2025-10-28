@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Selectable : MonoBehaviour
@@ -26,21 +27,16 @@ public class Selectable : MonoBehaviour
         GenerateActions();
     }
 
-    private void Update()
+    protected void Update()
     {
-        foreach (Action action in _Actions)
+        if (_Actions != null && _Actions.Count > 0)
         {
-            Debug.Log($"Calling action update for {action.GetActionData().name}");
-            action.UpdateCooldown();
-        }
-        //if (_Actions != null && _Actions.Count > 0)
-        //{
-        //    foreach (Action action in _Actions)
-        //    {
-        //        action.UpdateCooldown();
+            foreach (Action action in _Actions)
+            {
+                action.UpdateCooldown();
 
-        //    }
-        //}
+            }
+        }
     }
 
     private void GenerateActions()

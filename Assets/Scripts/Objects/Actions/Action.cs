@@ -31,18 +31,18 @@ public class Action
 
     public void DoAction(GameObject target)
     {
-        Debug.Log("Calling DoAction");
+        //Debug.Log("Calling DoAction");
         if (_IsOnCooldown) { return; }
-        Debug.Log("DoAction is off cooldown");
+        //Debug.Log("DoAction is off cooldown");
         switch (_ActionData.Type)
         {
             case ActionType.Immediate:
-                Debug.Log("Calling Calling Immediate abiligy");
+                //Debug.Log("Calling Calling Immediate abiligy");
                 _ActionData.DoAction(target);
                 StartCooldown();
                 break;
             case ActionType.Placement:
-                Debug.Log("Calling Placement ability");
+                //Debug.Log("Calling Placement ability");
                 target.GetComponent<Unit>().SetActionCaller(this);
                 _ActionData.DoAction(target);
                 //StartCooldown is called at the end of the WaitForWorker coroutine, when the building is instantiated
@@ -62,15 +62,16 @@ public class Action
     public void UpdateCooldown()
     {
         //Debug.Log($"{_ActionData.name} cooldown: {_IsOnCooldown}/ active: {_IsActive}");
+        //Debug.Log($"{_ActionData.name}");
         if (_IsOnCooldown)
         {
+            //Debug.Log($"{_ActionData.Name} passed cooldown check");
             _CooldownTimer -= Time.deltaTime;
             if (_CooldownTimer <= 0.0f)
             {
                 _CooldownTimer = 0.0f;
                 _IsOnCooldown = false;
             }
-
             if (_IsActive)
             {
                 _CooldownMaskRef.fillAmount = _CooldownTimer / _ActionData.CooldownTime;
