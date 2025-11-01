@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -1825355463003468765}
   - component: {fileID: 6789335123229766123}
   - component: {fileID: 3564059066726992863}
+  - component: {fileID: 3025742217880180963}
   m_Layer: 9
   m_Name: BarracksPlaceholder
   m_TagString: Placeholder
@@ -82,6 +83,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _UnubstructedColour: {r: 0, g: 0.8396226, b: 0.037456784, a: 1}
   _ObstructedColour: {r: 1, g: 0, b: 0.035849094, a: 1}
+--- !u!114 &3025742217880180963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169424224707868972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3a12b10a6745cf49a89809813bd3d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AssignWorker
 --- !u!1001 &808170201344483701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,7 +105,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6976692779867010275, guid: 22d7541a3b2b1254987cb364c2575194,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 535f38406177eed46b71e42699dbb677, type: 2}
     - target: {fileID: 8113548923536052108, guid: 22d7541a3b2b1254987cb364c2575194,

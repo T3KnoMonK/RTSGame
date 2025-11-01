@@ -57,7 +57,7 @@ public class CheckObstruction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Ground")
+        if (other.tag != "Ground" /*&& (other.gameObject.GetComponent<Unit>().GetSO() as SO_Unit).unitType != UnitType.Worker*/)
         {
             _Obstructions.Add(other.gameObject);
             SetModelMatsColour(_ObstructedColour);

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+public enum UnitType { Worker, Assault, Tank };
 
 [CreateAssetMenu(fileName = "New Unit", menuName = "Units/Unit")]
 public class SO_Unit : SO_Selectable
@@ -18,7 +19,6 @@ public class SO_Unit : SO_Selectable
 
     //Unit Type
     public UnitType unitType;
-    public enum UnitType { Worker, Assault, Tank };
 
     //Appearance
     public Material unitSkin;

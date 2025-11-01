@@ -13,7 +13,6 @@ public class PlaceBuildingAction : SO_Action
             return 0;
 
         target.GetComponent<Unit>().StartBuild(Placeholder, Building);
-        //Debug.Log("Place Buildling action called");
         return 1;
     }
 }

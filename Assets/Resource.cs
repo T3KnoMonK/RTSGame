@@ -24,9 +24,8 @@ public class Resource : Selectable
         Resources = resourceSO.MaxResources;
     }
 
-    private void Update()
+    private new void Update()
     {
-        //Debug.Log("Worker gathering: " + _IsWorkerGathering);
         if(_IsWorkerGathering) return;
         else if (!_IsWorkerGathering)
         {
@@ -41,19 +40,14 @@ public class Resource : Selectable
         Resources += amount;
         if(Resources < 0) { Resources = 0; }
         UpdateResourceEvent?.Invoke();
-        //if (IsSelected) { Debug.Log("Resource is selected and has " + Resources + " resources."); }
     }
 
     public Unit PopFromQ() {
         if (_WorkerQ[0] != null)
         {
             Unit tmp = _WorkerQ[0];
-            //tmp.Appear();
-            //Debug.Log("Popping " + tmp.name);
             _WorkerQ.RemoveAt(0);
-            //Debug.Log("Workers in Queue: " + PrintAllWorkers(_WorkerQ));
             _IsWorkerGathering = false;
-            //StartNextWorkerGathering(); //Shouldn't need this here if _IsWorkerGathering flag is being set correctly
             return tmp;
         }
         return null;
@@ -63,9 +57,7 @@ public class Resource : Selectable
 
     public void AddToQ(Unit unit)
     {
-        //Debug.Log("Adding " + unit.name);
         _WorkerQ.Add(unit);
-        //Debug.Log("Workers in Queue: " + PrintAllWorkers(_WorkerQ));
     }
 
     public void StartNextWorkerGathering()

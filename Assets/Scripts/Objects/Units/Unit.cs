@@ -5,15 +5,6 @@ using UnityEngine.AI;
 
 public class Unit : Selectable, IClickContext
 {
-    public delegate void StartBuildEventDelegate(GameObject placeholder);
-    public static StartBuildEventDelegate StartBuildEvent;
-
-    public delegate void PlaceBuildingEventDelegate();
-    public static PlaceBuildingEventDelegate PlacedBuildingEvent;
-
-    public delegate void CancelBuildEventDelegate();
-    public static CancelBuildEventDelegate CancelBuildEvent;
-
     public delegate void DestroyUnitCardDelegate(GameObject card, GameObject unit); //need to pass unit so DisplayUnitCards can call for the Unit to be destroyed after destroying the card
     public static DestroyUnitCardDelegate DestroyUnitCardEvent;
 
@@ -93,7 +84,9 @@ public class Unit : Selectable, IClickContext
         Player.Instance.AdjustSupplyInUse(UnitSupply * -1);
     }
 
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private void Update()
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
     {
         base.Update();
         _UnitFSM.Update();
@@ -166,7 +159,7 @@ public class Unit : Selectable, IClickContext
 
         if (CursorManager.Instance.IsCursorPlaceholder())
         {
-            CancelBuildEvent.Invoke();
+            CursorManager.Instance.CancelBuild(gameObject.GetInstanceID());
             Kill_WFW_Coroutine();
         }
     }
@@ -181,24 +174,30 @@ public class Unit : Selectable, IClickContext
         //Because the mouse down event already fired when you clicked the action button this should be the next mouse down event
         if (CursorManager.Instance.IsCursorPlaceholder())
         {
-            PutDownPlaceholder(currentBuildingToPlace, CursorManager.Instance.GetPlaceholderPos());
+            TryPutDownPlaceholder();
         }
     }
-
 
     // StartBuild signals the placeholder to change. Anything that happens at the start of the action triggering should happen here. This includes handling a placeholder already existing and the unit being in the middle of an action already.
     public void StartBuild(GameObject placeholder, GameObject building)
     {
-        StartBuildEvent.Invoke(Instantiate(placeholder, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity));
+        placeholder.GetComponent<AssignWorker>().AssignedWorkerID = gameObject.GetInstanceID();
+
+        CursorManager.Instance.SetPlaceholder(
+            Instantiate(placeholder, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity),
+            gameObject.GetInstanceID()
+            );
         Kill_WFW_Coroutine();
         currentBuildingToPlace = building;
     }
 
-    public void PutDownPlaceholder(GameObject building, Vector3 worldPos)
+    public void TryPutDownPlaceholder()
     {
-        if (CursorManager.Instance.GetPlaceholder().GetComponent<CheckObstruction>().IsObsructed() == false)
+        GameObject tmp = CursorManager.Instance.GetPlaceHolderForWorker(gameObject.GetInstanceID());
+        if(tmp == null) { return; }
+        if (tmp.GetComponent<CheckObstruction>().IsObsructed() == false)
         {
-            CursorManager.Instance.GetPlaceholder().GetComponent<FollowCursor>().StopFollowing();
+            tmp.GetComponent<FollowCursor>().StopFollowing();
             CallWorkerMoveOrder();
         }
     }
@@ -215,15 +214,19 @@ public class Unit : Selectable, IClickContext
     {
         if(Player.Instance.Army.GetPlayerSelectedObjects().Count > 0)
         {
-            Unit tmp;
-
             if (Player.Instance.Army.GetPlayerSelectedObjects()[0].GetComponent<Unit>() != null)
             {
-                tmp = Player.Instance.Army.GetPlayerSelectedObjects()[0] as Unit;
+                Unit tmp = Player.Instance.Army.GetPlayerSelectedObjects()[0] as Unit;
+
+                if (tmp == null) { Debug.Log("Unit not found"); return; }
 
                 if (tmp.GetUnitFSM().parentSO.unitType == 0)
                 {
-                    tmp.SetBuildMoveOrder(CursorManager.Instance.GetPlaceholder());
+                    GameObject plc = CursorManager.Instance.GetPlaceHolderForWorker(gameObject.GetInstanceID());
+
+                    if(plc == null) { Debug.Log("Placeholder not found"); return; }
+
+                    tmp.SetBuildMoveOrder(plc);
                     WaitForWorkerCoroutine = StartCoroutine("WaitForWorker");
                 }
             }
@@ -232,7 +235,10 @@ public class Unit : Selectable, IClickContext
 
     private Action currentActionCaller;
 
-    public void SetActionCaller(Action actionCaller) { currentActionCaller = actionCaller; }
+    public void SetActionCaller(Action actionCaller) 
+    {
+        currentActionCaller = actionCaller; 
+    }
 
     private bool HasWorkerArrived;
 
@@ -246,11 +252,23 @@ public class Unit : Selectable, IClickContext
     private IEnumerator WaitForWorker()
     {
         HasWorkerArrived = false;
-        if (CursorManager.Instance.IsCursorDefault() == false) { CursorManager.Instance.SetCursorIsDefault(); } //Allows the player to box select while the worker is moving
+
+        if (!CursorManager.Instance.IsCursorDefault()) 
+        {
+            //Allows the player to box select while the worker is moving
+            CursorManager.Instance.SetCursorIsDefault(); 
+        } 
+
         yield return new WaitUntil(() => HasWorkerArrived);
-        GameObject newBuilding = Instantiate(currentBuildingToPlace, CursorManager.Instance.GetPlaceholderPos(), Quaternion.identity);
-        PlacedBuildingEvent.Invoke();
-        //Debug.Log($"Calling StartCooldown on {currentActionCaller.GetActionData().name}");
+
+        GameObject tmp = CursorManager.Instance.GetPlaceHolderForWorker(gameObject.GetInstanceID());
+
+        if(tmp == null) { Debug.Log("Placeholder not found"); yield break;}
+
+        GameObject newBuilding = Instantiate(currentBuildingToPlace, tmp.transform.position, Quaternion.identity);
+
+        CursorManager.Instance.SetBuilding(gameObject.GetInstanceID());
+
         currentActionCaller.StartCooldown();
     }
 

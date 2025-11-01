@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CursorManager : MonoBehaviour
@@ -19,10 +20,7 @@ public class CursorManager : MonoBehaviour
     public bool IsCursorPlaceholder() { return cursorState == CursorState.Placeholder ? true : false; }
     public void SetCursorIsPlaceholder() { cursorState = CursorState.Placeholder; }
 
-    public Vector3 GetPlaceholderPos() { return _PlaceholderObj.transform.position!; }
-
-    private GameObject _PlaceholderObj;
-    public GameObject GetPlaceholder() {  return _PlaceholderObj; }
+    private Dictionary<int, GameObject> _PlaceholderList = new Dictionary<int, GameObject>();
 
     private void Awake()
     {
@@ -36,36 +34,44 @@ public class CursorManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void SetPlaceholder(GameObject placeholder, int WorkerID)
     {
-        Unit.PlacedBuildingEvent += SetBuilding;
-        Unit.CancelBuildEvent += CancelBuild;
-        Unit.StartBuildEvent += SetPlaceholder;
-    }
-
-    private void OnDisable()
-    {
-        Unit.PlacedBuildingEvent -= SetBuilding;
-        Unit.CancelBuildEvent -= CancelBuild;
-        Unit.StartBuildEvent -= SetPlaceholder;
-    }
-
-    private void SetPlaceholder(GameObject placeholder)
-    {
-        if (_PlaceholderObj != null) { Destroy(_PlaceholderObj); } //Need this so the current placeholder does not exist erroneously if you set the placeholder (left click while it's active) then start another place building action.
-        _PlaceholderObj = placeholder;
+        //There should only be one placeholder associated with any worker at any given time. That single placeholder gets destroyed and removed before associating a new placeholder to that worker
+        if (_PlaceholderList.Count > 0)
+        {
+            DestroyPlaceholder(WorkerID); //Need this so the current placeholder does not exist erroneously if you set the placeholder (left click while it's active) then start another place building action.
+        }
+        _PlaceholderList.Add(WorkerID, placeholder);
         SetCursorIsPlaceholder();
     }
 
-    private void CancelBuild()
+    public void CancelBuild(int WorkerID)
     {
-        if (_PlaceholderObj != null) { Destroy(_PlaceholderObj); }
+        DestroyPlaceholder(WorkerID);
         SetCursorIsDefault();
     }
 
-    private void SetBuilding()
+    public void SetBuilding(int WorkerID)
     {
-        if (_PlaceholderObj != null) { Destroy(_PlaceholderObj); }
+        DestroyPlaceholder(WorkerID);
         SetCursorIsDefault();
+    }
+
+    private void DestroyPlaceholder(int WorkerID)
+    {
+        if (_PlaceholderList.Count == 0) { return; }
+
+        if (_PlaceholderList.ContainsKey(WorkerID))
+        {
+            Destroy(_PlaceholderList[WorkerID]);
+            _PlaceholderList.Remove(WorkerID);
+        }
+    }
+
+    public GameObject GetPlaceHolderForWorker(int workerID)
+    {
+        if (_PlaceholderList.Count == 0) { return null; }
+
+        return _PlaceholderList.ContainsKey(workerID) ? _PlaceholderList[workerID] : null;
     }
 }

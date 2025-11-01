@@ -1649,6 +1649,7 @@ GameObject:
   m_Component:
   - component: {fileID: 505570511}
   - component: {fileID: 505570510}
+  - component: {fileID: 505570512}
   m_Layer: 0
   m_Name: MiniMapCamera
   m_TagString: MiniMapCam
@@ -1716,12 +1717,26 @@ Transform:
   m_GameObject: {fileID: 505570508}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 500, y: 925, z: 500}
+  m_LocalPosition: {x: 500, y: 100, z: 500}
   m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &505570512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505570508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f196fbca141d7494f93e30a0f3e22335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SizeToGround
+  _Ground: {fileID: 489865869}
+  _MinimapCamera: {fileID: 505570510}
 --- !u!114 &557765677 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 776082529197474265, guid: 7a4281aaf5c2dc5458df205d8feecc6e,
