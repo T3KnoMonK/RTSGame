@@ -389,6 +389,7 @@ GameObject:
   - component: {fileID: 7343582251415658415}
   - component: {fileID: 5335721991322492958}
   - component: {fileID: 8316145112102606247}
+  - component: {fileID: 6268975669020296453}
   m_Layer: 9
   m_Name: Barracks
   m_TagString: Structure
@@ -433,8 +434,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15, y: 7, z: 15}
-  m_Center: {x: 0, y: 3.5, z: 0}
+  m_Size: {x: 15, y: 4, z: 15}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!114 &363183333187590874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,6 +507,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!208 &6268975669020296453
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169424224707868972}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &4818702892753482128
 PrefabInstance:
   m_ObjectHideFlags: 0
