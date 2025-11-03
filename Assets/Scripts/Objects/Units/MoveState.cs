@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using WebSocketSharp;
 
 public partial class UnitFSM
 {
@@ -22,18 +23,21 @@ public partial class UnitFSM
         {
             _UnitFSM.CurrentPos = _UnitFSM.Parent.transform.position;
 
-            if (_UnitFSM.CurrentPos.x == _UnitFSM.Parent.NavAgent.destination.x && _UnitFSM.CurrentPos.z == _UnitFSM.Parent.NavAgent.destination.z)
+            Vector2 to = new Vector2(_UnitFSM.Parent.NavAgent.destination.x, _UnitFSM.Parent.NavAgent.destination.z);
+            Vector2 from = new Vector2(_UnitFSM.CurrentPos.x, _UnitFSM.CurrentPos.z);
+
+            float dist = (to - from).magnitude;
+            float offset = (_UnitFSM.Parent.GetComponent<BoxCollider>().bounds.extents.x * _UnitFSM.Parent.GetComponent<BoxCollider>().bounds.extents.z) / 2; //average the extents for simplicity for now.
+
+            if (dist <= offset)
             {
                 if(_UnitFSM.ManualMoveAction == true)
                 {
-                    //At this time this block is only used to determine if the worker has arrived at the location of a building the player is placing
                     if (_UnitFSM.parentSO.unitType == 0)
                     {
-                        //Player.Instance.SendMessage("WorkerHasArrived", SendMessageOptions.DontRequireReceiver);
                         _UnitFSM.Parent.WorkerHasArrived();
                     }
                 }
-
                 _UnitFSM.ChangeState(_UnitFSM.GetState("IDLE"));
             }
 

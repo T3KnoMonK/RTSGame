@@ -84,6 +84,18 @@ public class Unit : Selectable, IClickContext
         Player.Instance.AdjustSupplyInUse(UnitSupply * -1);
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        if ((GetComponent<NavMeshAgent>().destination - gameObject.transform.position).magnitude <= 0.2)
+        {
+            if (collision != null)
+            {
+                Vector3 adjustPos = Vector3.zero;
+                GetComponent<NavMeshAgent>().SetDestination(collision.collider.ClosestPointOnBounds(gameObject.transform.position));
+            }
+        }
+    }
+
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private void Update()
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword

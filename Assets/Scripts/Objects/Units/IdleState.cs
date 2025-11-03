@@ -11,6 +11,7 @@ public partial class UnitFSM
 
         public override void EnterState()
         {
+            _UnitFSM.Parent.NavAgent.velocity = Vector3.zero;
             _UnitFSM.Parent.NavAgent.isStopped = true;
             //Debug.Log("Entered IDLE state");
         }
