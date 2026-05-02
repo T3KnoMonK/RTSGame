@@ -283,5 +283,4 @@ public class Unit : Selectable, IClickContext
 
         currentActionCaller.StartCooldown();
     }
-
 }
